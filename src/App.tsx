@@ -1,11 +1,11 @@
+import { Reset } from 'styled-reset';
+import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import IssueList from './pages/IssueList/IssueList';
 import Issue from './pages/Issue/Issue';
 import NewIssue from './pages/NewIssue/NewIssue';
 import LabelManagement from './pages/LabelManagement/LabelManagement';
 import Header from './components/Header';
-import { Reset } from 'styled-reset';
-import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
 * {
