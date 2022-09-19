@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import IssueList from './pages/IssueList/IssueList';
+import Issue from './pages/Issue/Issue';
+import NewIssue from './pages/NewIssue/NewIssue';
+import LabelManagement from './pages/LabelManagement/LabelManagement';
+import Header from './components/Header';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<IssueList />}></Route>
+        <Route path="labels" element={<LabelManagement />}></Route>
+        <Route path="issues/:id" element={<Issue />}></Route>
+        <Route path="issues/new" element={<NewIssue />}></Route>
+      </Routes>
+    </Router>
   );
 }
 
