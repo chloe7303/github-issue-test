@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@primer/octicons-react": "^17.5.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@storybook/react": "^6.5.12",
     "@supabase/supabase-js": "^1.35.6",
