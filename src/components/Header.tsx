@@ -8,7 +8,7 @@ const Wrapper = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 32px;
+  padding: 14px 32px;
 `;
 
 const Info = styled.div`
@@ -21,7 +21,6 @@ const Button = styled.button`
   font-weight: 700;
   background-color: transparent;
   border: 0;
-  font-size: 20px;
   cursor: pointer;
 `;
 
