@@ -13,6 +13,7 @@ const SearchInputWrap = styled.div`
 
 const SearchInput = styled.input`
   width: 320px;
+  height: 32px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.default};
   border: 1px solid ${({ theme }) => theme.border};
@@ -23,7 +24,7 @@ const SearchInput = styled.input`
 const SearchIconWrap = styled(SearchIcon)`
   position: absolute;
   left: 8px;
-  top: 6px;
+  top: 8px;
   color: ${({ theme }) => theme.text};
 `;
 

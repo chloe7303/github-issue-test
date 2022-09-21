@@ -1,11 +1,16 @@
 import styled from 'styled-components';
-import { Button } from '../Buttons';
 import {
   PinIcon,
   EyeIcon,
   RepoForkedIcon,
   StarIcon,
 } from '@primer/octicons-react';
+
+declare module 'react' {
+  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
+    count?: boolean;
+  }
+}
 
 const Wrapper = styled.div`
   margin-left: auto;
@@ -14,32 +19,28 @@ const Wrapper = styled.div`
   }
 `;
 
-const ActionButton = styled.span`
+const ActionButton = styled.button`
   margin-right: 8px;
+  ${({ count }) => (count ? 'padding: 3px 12px' : 'padding: 5px 12px')};
+  ${({ count }) => !count && 'vertical-align: bottom'};
+  border-radius: 6px;
+  background-color: transparent;
+  color: #24292f;
+  border: 1px solid ${({ theme }) => theme.border};
 `;
 
-const ButtonText = styled.span`
-  margin-left: 5px;
-`;
-
-const HalfButton = styled(Button)`
-  border-radius: 6px 0 0 6px;
-`;
-
-const DropdownButton = styled(Button)`
-  border-radius: 0 6px 6px 0;
-  border-left: 0;
-  padding-inline: 8px;
+const Text = styled.span`
+  margin-left: 8px;
 `;
 
 const Counter = styled.span`
   display: inline-block;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   background-color: rgba(27, 31, 36, 0.08);
   border-radius: 50%;
-  margin-left: 5px;
-  padding: 0 6px;
+  margin-inline: 5px;
+  padding: 1px 6px;
   font-size: 12px;
   line-height: 18px;
 `;
@@ -62,39 +63,26 @@ const Actions = () => {
   return (
     <Wrapper>
       <ActionButton>
-        <Button>
-          <PinIcon />
-          <ButtonText>Pin</ButtonText>
-        </Button>
+        <PinIcon />
+        <Text>Pin</Text>
       </ActionButton>
-      <ActionButton>
-        <Button>
-          <EyeIcon />
-          <ButtonText>Unwatch</ButtonText>
-          <Counter>1</Counter>
-          <DropdownCaret />
-        </Button>
+      <ActionButton count={true}>
+        <EyeIcon />
+        <Text>Unwatch</Text>
+        <Counter>1</Counter>
+        <DropdownCaret />
       </ActionButton>
-
-      <ActionButton>
-        <HalfButton>
-          <RepoForkedIcon />
-          <ButtonText>Fork</ButtonText>
-          <Counter>1</Counter>
-        </HalfButton>
-        <DropdownButton>
-          <DropdownCaret />
-        </DropdownButton>
+      <ActionButton count={true}>
+        <RepoForkedIcon />
+        <Text>Fork</Text>
+        <Counter>0</Counter>
+        <DropdownCaret />
       </ActionButton>
-      <ActionButton>
-        <HalfButton>
-          <StarIcon />
-          <ButtonText>Star</ButtonText>
-          <Counter>1</Counter>
-        </HalfButton>
-        <DropdownButton>
-          <DropdownCaret />
-        </DropdownButton>
+      <ActionButton count={true}>
+        <StarIcon />
+        <Text>Star</Text>
+        <Counter>o</Counter>
+        <DropdownCaret />
       </ActionButton>
     </Wrapper>
   );

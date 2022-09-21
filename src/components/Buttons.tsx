@@ -12,7 +12,7 @@ export const Button = styled.button`
   padding: 5px 16px;
   font-weight: 500;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.default};
+  background-color: ${({ theme }) => theme.light};
   color: #24292f;
   border: 1px solid ${({ theme }) => theme.border};
   margin-left: ${({ ml }) => ml};
@@ -43,6 +43,7 @@ const Tab = styled(Button)`
 
 const Text = styled.span`
   margin-left: 5px;
+  line-height: 20px;
 `;
 
 export const GroupedButton = ({ buttons }) => {
