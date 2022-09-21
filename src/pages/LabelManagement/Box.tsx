@@ -110,6 +110,7 @@ const Box = () => {
       </Header>
       <LabelList>
         <LabelItem />
+        <LabelItem />
       </LabelList>
     </Wrapper>
   );

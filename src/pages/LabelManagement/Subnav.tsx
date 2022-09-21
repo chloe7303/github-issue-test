@@ -1,6 +1,8 @@
 import styled from 'styled-components';
-import { PrimaryButton, GroupedButton } from '../../components/Buttons';
+import { Button, PrimaryButton, GroupedButton } from '../../components/Buttons';
 import { TagIcon, MilestoneIcon, SearchIcon } from '@primer/octicons-react';
+import { useState } from 'react';
+import LabelEdit from './LabelEdit';
 
 const Wrapper = styled.div`
   display: flex;
@@ -38,12 +40,44 @@ const SearchIconWrap = styled(SearchIcon)`
   color: ${({ theme }) => theme.text};
 `;
 
-const Button = styled(PrimaryButton)`
+const AddButton = styled(PrimaryButton)`
   margin-left: auto;
   @media screen and (max-width: 768px) {
     position: absolute;
     right: 16px;
     height: 32px;
+  }
+`;
+const CreateContainer = styled.div`
+  padding: 16px;
+  background-color: ${({ theme }) => theme.default};
+  border: 1px solid ${({ theme }) => theme.border};
+  border-radius: 6px;
+  margin-bottom: 16px;
+`;
+
+const Label = styled.span`
+  padding: 3px 11px;
+  background-color: red;
+  border-radius: 16px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+`;
+
+const Container = styled.div`
+  display: flex;
+  padding-block: 16px;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
+const ButtonGroup = styled.div`
+  margin-top: 21px;
+  margin-left: auto;
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
   }
 `;
 
@@ -60,17 +94,32 @@ const buttons = [
 ];
 
 function Subnav() {
+  const [isCreating, setIsCreating] = useState(false);
   return (
-    <Wrapper>
-      <Nav>
-        <GroupedButton buttons={buttons} />
-        <SearchInputWrap>
-          <SearchInput placeholder="Search all labels" />
-          <SearchIconWrap />
-        </SearchInputWrap>
-      </Nav>
-      <Button>New label</Button>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Nav>
+          <GroupedButton buttons={buttons} />
+          <SearchInputWrap>
+            <SearchInput placeholder="Search all labels" />
+            <SearchIconWrap />
+          </SearchInputWrap>
+        </Nav>
+        <AddButton onClick={() => setIsCreating(true)}>New label</AddButton>
+      </Wrapper>
+      {isCreating && (
+        <CreateContainer>
+          <Label>test</Label>
+          <Container>
+            <LabelEdit />
+            <ButtonGroup>
+              <Button onClick={() => setIsCreating(false)}>Cancel</Button>
+              <PrimaryButton ml="8">Create label</PrimaryButton>
+            </ButtonGroup>
+          </Container>
+        </CreateContainer>
+      )}
+    </>
   );
 }
 

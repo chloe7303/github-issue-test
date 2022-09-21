@@ -12,10 +12,12 @@ export const Button = styled.button`
   padding: 5px 16px;
   font-weight: 500;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.light};
+  background-color: ${({ theme }) => theme.default};
   color: #24292f;
   border: 1px solid ${({ theme }) => theme.border};
-  margin-left: ${({ ml }) => ml};
+  margin-left: ${({ ml }) => ml && `${ml}px`};
+  height: 32px;
+  cursor: pointer;
 `;
 
 export const PrimaryButton = styled(Button)`
@@ -36,6 +38,7 @@ const activeStyle = css`
 `;
 
 const Tab = styled(Button)`
+  background-color: ${({ theme }) => theme.light};
   ${({ active }) => active && activeStyle};
   border-radius: ${({ index }) =>
     index === 0 ? '6px 0 0 6px' : '0 6px 6px 0'};
