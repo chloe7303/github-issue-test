@@ -6,7 +6,7 @@ import Issue from './pages/Issue/Issue';
 import NewIssue from './pages/NewIssue/NewIssue';
 import LabelManagement from './pages/LabelManagement/LabelManagement';
 import Header from './components/Header';
-import RepoHeader from './components/RepoHeader';
+import RepoHeader from './components/RepoHeader/RepoHeader';
 import Footer from './components/Footer';
 
 const GlobalStyle = createGlobalStyle`

@@ -11,6 +11,38 @@ const Wrapper = styled.header`
   padding: 14px 32px;
 `;
 
+const NavBar = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SearchInput = styled.input`
+  height: 28px;
+  width: 270px;
+  padding-inline: 12px;
+  border: 0.1px solid rgba(255, 255, 255, 0.4);
+  background-color: transparent;
+  border-radius: 6px;
+  margin-left: 16px;
+  @media screen and (max-width: 1011px) {
+    display: none;
+  }
+`;
+
+const NavList = styled.nav`
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 16px;
+  @media screen and (max-width: 1011px) {
+    display: none;
+  }
+`;
+
+const Nav = styled.span`
+  margin-right: 16px;
+`;
+
 const Info = styled.div`
   display: flex;
   align-items: center;
@@ -31,6 +63,8 @@ const Avatar = styled.img`
   border-radius: 50%;
   margin-left: 5px;
 `;
+
+const navlist = ['Pull requests', 'Issues', 'Marketplace', 'Explore'];
 
 function Header() {
   const [user, setUser] = useState({});
@@ -77,7 +111,15 @@ function Header() {
 
   return (
     <Wrapper>
-      <MarkGithubIcon size="medium" fill="#fff" />
+      <NavBar>
+        <MarkGithubIcon size="medium" fill="#fff" />
+        <SearchInput placeholder="Search"></SearchInput>
+        <NavList>
+          {navlist.map((nav) => (
+            <Nav key={nav}>{nav}</Nav>
+          ))}
+        </NavList>
+      </NavBar>
       {JSON.stringify(user) !== '{}' ? (
         <Info>
           <Button onClick={signOut}>Sign out</Button>
