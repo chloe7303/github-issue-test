@@ -13,7 +13,10 @@ declare module 'react' {
 const Wrapper = styled.div`
   padding-top: 16px;
   padding-inline: 32px;
-  background-color: ${({ theme }) => theme.default}; ;
+  background-color: ${({ theme }) => theme.default};
+  @media screen and (max-width: 768px) {
+    padding-inline: 16px;
+  }
 `;
 
 const Head = styled.div`

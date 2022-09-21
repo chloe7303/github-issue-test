@@ -1,5 +1,6 @@
 import { CheckIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components';
+import LabelItem from './LabelItem';
 
 const border = css`
   border-radius: 6px;
@@ -84,50 +85,7 @@ const CheckIconWrap = styled(CheckIcon)`
   margin-left: -20px;
 `;
 
-const List = styled.div``;
-
-const Item = styled.div`
-  border-top: 1px solid ${({ theme }) => theme.border};
-  display: flex;
-  padding: 16px;
-  color: ${({ theme }) => theme.text};
-  font-size: 12px;
-  align-items: center;
-`;
-
-const LabelCol = styled.div`
-  width: 24.9%;
-`;
-
-const Label = styled.span`
-  padding: 1px 10px;
-  background-color: red;
-  border-radius: 16px;
-  color: #fff;
-  font-size: 12px;
-`;
-
-const DescriptionCol = styled.div`
-  width: 33.3%;
-`;
-
-const InfoCol = styled.div`
-  width: 24.9%;
-`;
-
-const ButtonCol = styled.div`
-  width: 16.6%;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  font-size: 12px;
-  border: 0;
-  background: none;
-  color: ${({ theme }) => theme.text};
-`;
+const LabelList = styled.div``;
 
 const Box = () => {
   return (
@@ -150,30 +108,9 @@ const Box = () => {
           </SelectMenu>
         </Details>
       </Header>
-      <List>
-        <Item>
-          <LabelCol>
-            <Label>bug</Label>
-          </LabelCol>
-          <DescriptionCol>Something isn't working</DescriptionCol>
-          <InfoCol>1 open issue or pull request</InfoCol>
-          <ButtonCol>
-            <Button>Edit</Button>
-            <Button>Delete</Button>
-          </ButtonCol>
-        </Item>
-        <Item>
-          <LabelCol>
-            <Label>bug</Label>
-          </LabelCol>
-          <DescriptionCol>Something isn't working</DescriptionCol>
-          <InfoCol>1 open issue or pull request</InfoCol>
-          <ButtonCol>
-            <Button>Edit</Button>
-            <Button>Delete</Button>
-          </ButtonCol>
-        </Item>
-      </List>
+      <LabelList>
+        <LabelItem />
+      </LabelList>
     </Wrapper>
   );
 };

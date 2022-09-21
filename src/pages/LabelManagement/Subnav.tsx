@@ -7,8 +7,18 @@ const Wrapper = styled.div`
   margin-bottom: 20px;
 `;
 
+const Nav = styled.nav`
+  display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
+
 const SearchInputWrap = styled.div`
   position: relative;
+  @media screen and (max-width: 768px) {
+    margin-top: 16px;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -28,6 +38,15 @@ const SearchIconWrap = styled(SearchIcon)`
   color: ${({ theme }) => theme.text};
 `;
 
+const Button = styled(PrimaryButton)`
+  margin-left: auto;
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    right: 16px;
+    height: 32px;
+  }
+`;
+
 const buttons = [
   {
     text: 'Labels',
@@ -43,12 +62,14 @@ const buttons = [
 function Subnav() {
   return (
     <Wrapper>
-      <GroupedButton buttons={buttons} />
-      <SearchInputWrap>
-        <SearchInput placeholder="Search all labels" />
-        <SearchIconWrap />
-      </SearchInputWrap>
-      <PrimaryButton ml="auto">New label</PrimaryButton>
+      <Nav>
+        <GroupedButton buttons={buttons} />
+        <SearchInputWrap>
+          <SearchInput placeholder="Search all labels" />
+          <SearchIconWrap />
+        </SearchInputWrap>
+      </Nav>
+      <Button>New label</Button>
     </Wrapper>
   );
 }

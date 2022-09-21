@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "github-issues-section"
+  },
+  "targets": {
+    "github-issues-section": {
+      "hosting": {
+        "github-issues-section-storybook": [
+          "github-issues-storybook"
+        ],
+        "github-issues-section": [
+          "github-issues-section"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
