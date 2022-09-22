@@ -1,8 +1,7 @@
 import styled, { css } from 'styled-components';
 import { KebabHorizontalIcon } from '@primer/octicons-react';
 import { useState } from 'react';
-import LabelEdit from './LabelEdit';
-import { Button, PrimaryButton } from '../../components/Buttons';
+import LabelForm from './LabelForm';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -19,9 +18,10 @@ const Wrapper = styled.div`
   font-size: 12px;
 `;
 
-const LebelDisplay = styled.div`
+const LabelDisplay = styled.div`
   display: flex;
   align-items: center;
+  ${({ isEdit }) => isEdit && 'display: none'};
 `;
 
 const LabelCol = styled.div`
@@ -29,7 +29,10 @@ const LabelCol = styled.div`
 `;
 
 const Label = styled.span`
-  padding: 3px 11px;
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 24px;
+  height: 24px;
   background-color: red;
   border-radius: 16px;
   color: #fff;
@@ -134,22 +137,6 @@ const DropdownButton = styled.button`
   }
 `;
 
-const EditContainer = styled.div`
-  display: flex;
-  padding-block: 16px;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  margin-top: 21px;
-  margin-left: auto;
-  @media screen and (max-width: 768px) {
-    margin-left: 0;
-  }
-`;
-
 const LabelItem = () => {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -163,9 +150,14 @@ const LabelItem = () => {
       'Are you sure? Deleting a label will remove it from all issues and pull requests.'
     );
   };
+  const LabelFormType = {
+    name: 'edit',
+    handelCancel: setIsEdit,
+    handleDelete: handleDelete,
+  };
   return (
     <Wrapper>
-      <LebelDisplay>
+      <LabelDisplay isEdit={isEdit}>
         <LabelCol>
           <Label>bug</Label>
         </LabelCol>
@@ -188,16 +180,8 @@ const LabelItem = () => {
             </Dropdown>
           </Details>
         </ButtonCol>
-      </LebelDisplay>
-      {isEdit && (
-        <EditContainer>
-          <LabelEdit />
-          <ButtonGroup>
-            <Button onClick={() => setIsEdit(false)}>Cancel</Button>
-            <PrimaryButton ml="8">Save changes</PrimaryButton>
-          </ButtonGroup>
-        </EditContainer>
-      )}
+      </LabelDisplay>
+      {isEdit && <LabelForm type={LabelFormType} />}
     </Wrapper>
   );
 };

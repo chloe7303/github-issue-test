@@ -1,32 +1,6 @@
 import styled, { css } from 'styled-components';
+import Button from './Button';
 
-declare module 'react' {
-  interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
-    ml?: string;
-    active?: boolean;
-    index?: number;
-  }
-}
-
-export const Button = styled.button`
-  padding: 5px 16px;
-  font-weight: 500;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.default};
-  color: #24292f;
-  border: 1px solid ${({ theme }) => theme.border};
-  margin-left: ${({ ml }) => ml && `${ml}px`};
-  height: 32px;
-  cursor: pointer;
-`;
-
-export const PrimaryButton = styled(Button)`
-  background-color: ${({ theme }) => theme.primary};
-  border: 1px solid ${({ theme }) => theme.primary};
-  color: #fff;
-`;
-
-// GroupedButton
 const Tabs = styled.div`
   margin-right: 8px;
 `;
@@ -49,7 +23,7 @@ const Text = styled.span`
   line-height: 20px;
 `;
 
-export const GroupedButton = ({ buttons }) => {
+const ButtonGroup = ({ buttons }) => {
   return (
     <Tabs>
       {buttons.map((button, index) => (
@@ -61,3 +35,5 @@ export const GroupedButton = ({ buttons }) => {
     </Tabs>
   );
 };
+
+export default ButtonGroup;

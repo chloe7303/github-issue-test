@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import IssueList from './pages/IssueList/IssueList';
 import Issue from './pages/Issue/Issue';
 import NewIssue from './pages/NewIssue/NewIssue';
-import LabelManagement from './pages/LabelManagement/LabelManagement';
+import LabelManagement from './pages/LabelList/LabelList';
 import Header from './components/Header';
 import RepoHeader from './components/RepoHeader/RepoHeader';
 import Footer from './components/Footer';

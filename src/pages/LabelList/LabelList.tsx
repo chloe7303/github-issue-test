@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Subnav from './Subnav';
-import Box from './Box';
+import LabelBox from './LabelBox';
 
 const Wrapper = styled.div`
   padding: 24px 32px;
@@ -15,7 +15,7 @@ const LabelManagement = () => {
   return (
     <Wrapper>
       <Subnav />
-      <Box />
+      <LabelBox />
     </Wrapper>
   );
 };

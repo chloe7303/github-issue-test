@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { Button, PrimaryButton, GroupedButton } from '../../components/Buttons';
+import { PrimaryButton } from '../../components/buttons/Button';
+import ButtonGroup from '../../components/buttons/ButtonGroup';
 import { TagIcon, MilestoneIcon, SearchIcon } from '@primer/octicons-react';
 import { useState } from 'react';
-import LabelEdit from './LabelEdit';
+import LebelForm from './LabelForm';
 
 const Wrapper = styled.div`
   display: flex;
@@ -56,31 +57,6 @@ const CreateContainer = styled.div`
   margin-bottom: 16px;
 `;
 
-const Label = styled.span`
-  padding: 3px 11px;
-  background-color: red;
-  border-radius: 16px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-`;
-
-const Container = styled.div`
-  display: flex;
-  padding-block: 16px;
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  margin-top: 21px;
-  margin-left: auto;
-  @media screen and (max-width: 768px) {
-    margin-left: 0;
-  }
-`;
-
 const buttons = [
   {
     text: 'Labels',
@@ -95,11 +71,21 @@ const buttons = [
 
 function Subnav() {
   const [isCreating, setIsCreating] = useState(false);
+
+  const handelCreate = () => {
+    console.log('create');
+  };
+
+  const LabelFormType = {
+    name: 'create',
+    handelCancel: setIsCreating,
+    handelCreate: handelCreate,
+  };
   return (
     <>
       <Wrapper>
         <Nav>
-          <GroupedButton buttons={buttons} />
+          <ButtonGroup buttons={buttons} />
           <SearchInputWrap>
             <SearchInput placeholder="Search all labels" />
             <SearchIconWrap />
@@ -109,14 +95,7 @@ function Subnav() {
       </Wrapper>
       {isCreating && (
         <CreateContainer>
-          <Label>test</Label>
-          <Container>
-            <LabelEdit />
-            <ButtonGroup>
-              <Button onClick={() => setIsCreating(false)}>Cancel</Button>
-              <PrimaryButton ml="8">Create label</PrimaryButton>
-            </ButtonGroup>
-          </Container>
+          <LebelForm type={LabelFormType} />
         </CreateContainer>
       )}
     </>

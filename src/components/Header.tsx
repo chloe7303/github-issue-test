@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../client';
 import styled from 'styled-components';
-import { MarkGithubIcon } from '@primer/octicons-react';
+import {
+  MarkGithubIcon,
+  ThreeBarsIcon,
+  BellIcon,
+  PlusIcon,
+} from '@primer/octicons-react';
 
 const Wrapper = styled.header`
   background-color: #161b22;
@@ -14,6 +19,26 @@ const Wrapper = styled.header`
 const NavBar = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 1011px) {
+    width: 100%;
+    justify-content: space-between;
+  }
+`;
+
+const ToggleButton = styled(ThreeBarsIcon)`
+  color: #fff;
+  display: none !important;
+  @media screen and (max-width: 1011px) {
+    display: block !important;
+  }
+`;
+
+const NotificationButton = styled(BellIcon)`
+  color: #fff;
+  display: none !important;
+  @media screen and (max-width: 1011px) {
+    display: block !important;
+  }
 `;
 
 const SearchInput = styled.input`
@@ -44,8 +69,27 @@ const Nav = styled.span`
 `;
 
 const Info = styled.div`
+  width: 180px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: 1011px) {
+    display: none;
+  }
+`;
+
+const DropdownCaret = styled.span`
+  display: inline-block;
+  width: 0;
+  height: 0;
+  vertical-align: middle;
+  content: '';
+  border-style: solid;
+  border-width: 4px 4px 0;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  color: #fff;
 `;
 
 const Button = styled.button`
@@ -112,18 +156,24 @@ function Header() {
   return (
     <Wrapper>
       <NavBar>
+        <ToggleButton />
         <MarkGithubIcon size="medium" fill="#fff" />
-        <SearchInput placeholder="Search"></SearchInput>
+        <SearchInput placeholder="Search or jump to..."></SearchInput>
         <NavList>
           {navlist.map((nav) => (
             <Nav key={nav}>{nav}</Nav>
           ))}
         </NavList>
+        <NotificationButton />
       </NavBar>
       {JSON.stringify(user) !== '{}' ? (
         <Info>
-          <Button onClick={signOut}>Sign out</Button>
+          <BellIcon fill="#fff" />
+          <PlusIcon fill="#fff" />
+          <DropdownCaret />
           {avatarUrl && <Avatar src={avatarUrl} />}
+          <DropdownCaret />
+          <Button onClick={signOut}>Sign out</Button>
         </Info>
       ) : (
         <Button onClick={signInWithGithub}>Sign in</Button>

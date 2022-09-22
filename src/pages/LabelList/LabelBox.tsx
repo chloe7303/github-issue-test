@@ -87,7 +87,7 @@ const CheckIconWrap = styled(CheckIcon)`
 
 const LabelList = styled.div``;
 
-const Box = () => {
+const LabelBox = () => {
   return (
     <Wrapper>
       <Header>
@@ -116,4 +116,4 @@ const Box = () => {
   );
 };
 
-export default Box;
+export default LabelBox;
