@@ -1,13 +1,15 @@
 import styled, { css } from 'styled-components';
 import { KebabHorizontalIcon } from '@primer/octicons-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LabelForm from './LabelForm';
+import Label from './Label';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     open?: boolean;
     handleEdit?: Function;
     isEdit?: boolean;
+    bgColorCode?: string;
   }
 }
 
@@ -26,18 +28,6 @@ const LabelDisplay = styled.div`
 
 const LabelCol = styled.div`
   width: 24.9%;
-`;
-
-const Label = styled.span`
-  display: inline-block;
-  padding: 0 10px;
-  line-height: 24px;
-  height: 24px;
-  background-color: red;
-  border-radius: 16px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
 `;
 
 const DescriptionCol = styled.div`
@@ -137,7 +127,21 @@ const DropdownButton = styled.button`
   }
 `;
 
-const LabelItem = () => {
+type LabelType = {
+  id: number;
+  node_id: string;
+  url: string;
+  name: string;
+  color: string;
+  default: boolean;
+  description: string;
+};
+
+type Props = {
+  label: LabelType;
+};
+
+const LabelItem: React.FC<Props> = ({ label }) => {
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -159,9 +163,9 @@ const LabelItem = () => {
     <Wrapper>
       <LabelDisplay isEdit={isEdit}>
         <LabelCol>
-          <Label>bug</Label>
+          <Label bgColorCode={label.color} name={label.name} />
         </LabelCol>
-        <DescriptionCol isEdit={isEdit}>Something isn't working</DescriptionCol>
+        <DescriptionCol isEdit={isEdit}>{label.description}</DescriptionCol>
         <InfoCol isEdit={isEdit}>1 open issue or pull request</InfoCol>
         <ButtonCol>
           <ListButton isEdit={isEdit} onClick={() => setIsEdit(true)}>

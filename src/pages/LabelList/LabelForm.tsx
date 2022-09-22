@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { SyncIcon } from '@primer/octicons-react';
 import Button, { PrimaryButton } from '../../components/buttons/Button';
+import { useState } from 'react';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -25,7 +26,7 @@ const FormGroup = styled.div`
   }
 `;
 
-const Label = styled.span`
+const Label = styled.a`
   display: inline-block;
   padding: 0 10px;
   line-height: 24px;
@@ -91,6 +92,7 @@ const SyncButton = styled.button`
   background-color: red;
   color: #fff;
   border: red;
+  cursor: pointer;
 `;
 
 const Dt = styled.dt`
@@ -109,7 +111,11 @@ const Input = styled.input`
   padding: 5px 12px;
 `;
 
-const ColorSelector = styled.div`
+type ColorSelectorProp = {
+  show: boolean;
+};
+const ColorSelector = styled.div<ColorSelectorProp>`
+  ${({ show }) => !show && 'display:none'};
   position: absolute;
   width: 254px;
   top: 35px;
@@ -147,11 +153,28 @@ const Block = styled.span`
   height: 24px;
   border-radius: 6px;
   background-color: ${({ bg }) => bg};
+  cursor: pointer;
 `;
 
 const ButtonGroup = styled.div`
   margin-top: 21px;
   margin-left: auto;
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+  }
+`;
+
+const Cancel = styled(Button)`
+  @media screen and (max-width: 768px) {
+    margin-left: 8px;
+  }
+`;
+
+const Action = styled(PrimaryButton)`
+  margin-left: 8px;
   @media screen and (max-width: 768px) {
     margin-left: 0;
   }
@@ -177,6 +200,8 @@ const colorBlocks = [
 ];
 
 const LabelForm = ({ type }) => {
+  const [showColorSelector, setShowColorSelector] = useState(false);
+  const [selectedColorCode, setSelectedColorCode] = useState(colorBlocks[0]);
   return (
     <Container>
       <LabelCol>
@@ -200,8 +225,12 @@ const LabelForm = ({ type }) => {
             <SyncButton>
               <SyncIcon />
             </SyncButton>
-            <Input />
-            <ColorSelector>
+            <Input
+              onFocus={() => setShowColorSelector(true)}
+              onBlur={() => setShowColorSelector(false)}
+              value={selectedColorCode}
+            />
+            <ColorSelector show={showColorSelector}>
               <Hint>Choose from default colors:</Hint>
               <BlockWrapper>
                 {colorBlocks.slice(0, 8).map((block) => (
@@ -217,10 +246,10 @@ const LabelForm = ({ type }) => {
           </ColorDd>
         </ColorDl>
         <ButtonGroup>
-          <Button onClick={() => type.handelCancel(false)}>Cancel</Button>
-          <PrimaryButton ml="8">
+          <Cancel onClick={() => type.handelCancel(false)}>Cancel</Cancel>
+          <Action>
             {type.name === 'edit' ? 'Save changes' : 'Create label'}
-          </PrimaryButton>
+          </Action>
         </ButtonGroup>
       </FormGroup>
     </Container>

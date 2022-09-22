@@ -1,6 +1,8 @@
 import { CheckIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components';
 import LabelItem from './LabelItem';
+import api from '../../utils/api';
+import { useEffect, useState } from 'react';
 
 const border = css`
   border-radius: 6px;
@@ -87,7 +89,30 @@ const CheckIconWrap = styled(CheckIcon)`
 
 const LabelList = styled.div``;
 
+type LabelType = {
+  id: number;
+  node_id: string;
+  url: string;
+  name: string;
+  color: string;
+  default: boolean;
+  description: string;
+};
+
+type LabelListType = LabelType[];
+
 const LabelBox = () => {
+  const [labelList, setLabelList] = useState<LabelListType>([]);
+
+  useEffect(() => {
+    async function getLabels() {
+      const data = await api.getLabels();
+      console.log(labelList);
+      setLabelList(data);
+    }
+    getLabels();
+  }, []);
+
   return (
     <Wrapper>
       <Header>
@@ -109,8 +134,9 @@ const LabelBox = () => {
         </Details>
       </Header>
       <LabelList>
-        <LabelItem />
-        <LabelItem />
+        {labelList.map((label, index) => (
+          <LabelItem key={index} label={label} />
+        ))}
       </LabelList>
     </Wrapper>
   );
