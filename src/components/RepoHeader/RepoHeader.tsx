@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   padding-top: 16px;
   padding-inline: 32px;
   background-color: ${({ theme }) => theme.default};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
   @media screen and (max-width: 768px) {
     padding-inline: 16px;
   }

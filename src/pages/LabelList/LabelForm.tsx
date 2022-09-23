@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { SyncIcon } from '@primer/octicons-react';
 import Button, { PrimaryButton } from '../../components/buttons/Button';
 import { useState } from 'react';
+import Label from './Label';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -24,18 +25,6 @@ const FormGroup = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
-`;
-
-const Label = styled.a`
-  display: inline-block;
-  padding: 0 10px;
-  line-height: 24px;
-  height: 24px;
-  background-color: red;
-  border-radius: 16px;
-  color: #fff;
-  font-weight: 600;
-  font-size: 12px;
 `;
 
 const DeleteButton = styled.button`
@@ -89,9 +78,9 @@ const SyncButton = styled.button`
   padding-inline: 7px;
   margin-right: 8px;
   border-radius: 6px;
-  background-color: red;
+  background-color: ${({ bgColorCode }) => `#${bgColorCode}`};
   color: #fff;
-  border: red;
+  border: ${({ bgColorCode }) => `#${bgColorCode}`};
   cursor: pointer;
 `;
 
@@ -201,11 +190,21 @@ const colorBlocks = [
 
 const LabelForm = ({ type }) => {
   const [showColorSelector, setShowColorSelector] = useState(false);
-  const [selectedColorCode, setSelectedColorCode] = useState(colorBlocks[0]);
+  const [selectedColorCode, setSelectedColorCode] = useState('d73a4a');
+  const [labelForm, setlabelForm] = useState({
+    name: '',
+    description: '',
+    color: '',
+  });
+
+  const handleGenerateColor = () => {
+    const hexCode = Math.floor(Math.random() * 16777215).toString(16);
+    setSelectedColorCode(hexCode);
+  };
   return (
     <Container>
       <LabelCol>
-        <Label>bug</Label>
+        <Label bgColorCode={selectedColorCode} name="bug" />
         <DeleteButton name={type.name} onClick={() => type.handleDelete()}>
           Delete
         </DeleteButton>
@@ -213,22 +212,40 @@ const LabelForm = ({ type }) => {
       <FormGroup>
         <NameDl>
           <Dt>Label name</Dt>
-          <Input placeholder="Label name" />
+          <Input
+            placeholder="Label name"
+            value={labelForm.name}
+            onChange={(e) =>
+              setlabelForm({ ...labelForm, name: e.target.value })
+            }
+          />
         </NameDl>
         <DescriptionDl>
           <Dt>Description</Dt>
-          <Input placeholder="Description (optional)" />
+          <Input
+            placeholder="Description (optional)"
+            value={labelForm.name}
+            onChange={(e) =>
+              setlabelForm({ ...labelForm, description: e.target.value })
+            }
+          />
         </DescriptionDl>
         <ColorDl>
           <Dt>Color</Dt>
           <ColorDd>
-            <SyncButton>
+            <SyncButton
+              bgColorCode={selectedColorCode}
+              onClick={handleGenerateColor}
+            >
               <SyncIcon />
             </SyncButton>
             <Input
               onFocus={() => setShowColorSelector(true)}
               onBlur={() => setShowColorSelector(false)}
-              value={selectedColorCode}
+              value={`#${selectedColorCode}`}
+              onChange={(e) =>
+                setlabelForm({ ...labelForm, color: e.target.value })
+              }
             />
             <ColorSelector show={showColorSelector}>
               <Hint>Choose from default colors:</Hint>

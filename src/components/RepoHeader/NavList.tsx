@@ -24,7 +24,7 @@ const List = styled.div`
 
 const Item = styled.li`
   font-size: 14px;
-  padding: 10px 15px;
+  padding: 15px 15px;
   display: flex;
   align-items: center;
   ${({ active }) => active && 'border-bottom: 2px solid #fd8c73'};
