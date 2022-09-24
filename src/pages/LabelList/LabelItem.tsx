@@ -3,6 +3,7 @@ import { KebabHorizontalIcon } from '@primer/octicons-react';
 import React, { useState } from 'react';
 import LabelForm from './LabelForm';
 import Label from './Label';
+import { useDeleteLabelMutation } from '../../redux/labelsApi';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -99,14 +100,24 @@ const Dropdown = styled.div`
   margin-top: 2px;
   padding-block: 4px;
   z-index: 2;
-  ::before {
-    top: -16px;
-    right: 9px;
+  &::after {
+    top: -12px;
+    right: 10px;
     left: auto;
-    border: 8px solid transparent;
-    border-bottom-color: ${({ theme }) => theme.light};
+    border: 7px solid transparent;
     position: absolute;
     display: inline-block;
+    border-bottom-color: #fff;
+    content: '';
+  }
+  &::before {
+    top: -14px;
+    right: 10px;
+    left: auto;
+    border: 7px solid transparent;
+    position: absolute;
+    display: inline-block;
+    border-bottom-color: #d0d7de;
     content: '';
   }
 `;
@@ -128,12 +139,12 @@ const DropdownButton = styled.button`
 `;
 
 type LabelType = {
-  id: number;
-  node_id: string;
-  url: string;
+  id?: number;
+  node_id?: string;
+  url?: string;
   name: string;
   color: string;
-  default: boolean;
+  default?: boolean;
   description: string;
 };
 
@@ -142,21 +153,28 @@ type Props = {
 };
 
 const LabelItem: React.FC<Props> = ({ label }) => {
-  const [open, setOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [deleteLabel] = useDeleteLabelMutation();
 
   const onToggle = () => {
-    setOpen(!open);
+    setOpenDropdown(!openDropdown);
   };
 
-  const handleDelete = () => {
-    alert(
-      'Are you sure? Deleting a label will remove it from all issues and pull requests.'
-    );
+  const handleDelete = async (name) => {
+    if (
+      !window.confirm(
+        'Are you sure? Deleting a label will remove it from all issues and pull requests.'
+      )
+    )
+      return;
+    await deleteLabel(name);
+    setIsEdit(false);
   };
+
   const LabelFormType = {
     name: 'edit',
-    handelCancel: setIsEdit,
+    handleCancel: setIsEdit,
     handleDelete: handleDelete,
   };
   return (
@@ -171,21 +189,25 @@ const LabelItem: React.FC<Props> = ({ label }) => {
           <ListButton isEdit={isEdit} onClick={() => setIsEdit(true)}>
             Edit
           </ListButton>
-          <ListButton onClick={handleDelete}>Delete</ListButton>
-          <Details open={open} onToggle={onToggle}>
-            <Summary open={open}>
+          <ListButton onClick={() => handleDelete(label.name)}>
+            Delete
+          </ListButton>
+          <Details open={openDropdown} onToggle={onToggle}>
+            <Summary open={openDropdown}>
               <KebabHorizontalIcon />
             </Summary>
             <Dropdown>
               <DropdownButton isEdit={isEdit} onClick={() => setIsEdit(true)}>
                 Edit
               </DropdownButton>
-              <DropdownButton onClick={handleDelete}>Delete</DropdownButton>
+              <DropdownButton onClick={() => handleDelete(label.name)}>
+                Delete
+              </DropdownButton>
             </Dropdown>
           </Details>
         </ButtonCol>
       </LabelDisplay>
-      {isEdit && <LabelForm type={LabelFormType} />}
+      {isEdit && <LabelForm type={LabelFormType} label={label} />}
     </Wrapper>
   );
 };

@@ -111,7 +111,7 @@ const Avatar = styled.img`
 const navlist = ['Pull requests', 'Issues', 'Marketplace', 'Explore'];
 
 function Header() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<{} | null>(null);
   const [token, setToken] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
 
@@ -148,7 +148,7 @@ function Header() {
   async function signOut() {
     console.log('sign out');
     await supabase.auth.signOut();
-    setUser({});
+    setUser(null);
     setAvatarUrl('');
     setToken('');
   }
@@ -166,7 +166,7 @@ function Header() {
         </NavList>
         <NotificationButton />
       </NavBar>
-      {JSON.stringify(user) !== '{}' ? (
+      {user ? (
         <Info>
           <BellIcon fill="#fff" />
           <PlusIcon fill="#fff" />

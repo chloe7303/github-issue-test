@@ -3,7 +3,13 @@
     {
       "public": "build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-      "target": "github-issues-section"
+      "target": "github-issues-section",
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     },
     {
       "public": "storybook-static",

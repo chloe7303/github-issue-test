@@ -22,6 +22,8 @@ const Wrapper = styled.a<WrapperProp>`
   color: ${({ textColor }) => textColor};
   font-weight: 600;
   font-size: 12px;
+  ${({ bgColorCode }) =>
+    bgColorCode === 'ffffff' && 'border: 1px solid #d0d7de'};
 `;
 
 const Label = ({ bgColorCode, name }: LabelPropType) => {

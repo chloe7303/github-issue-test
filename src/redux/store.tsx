@@ -1,15 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import labelsReducer from './labels/labelsSlice';
-// import issuesReducer from './issues/issues';
+import { labelsApi } from './labelsApi';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    labels: labelsReducer,
+    [labelsApi.reducerPath]: labelsApi.reducer,
     // issues: issuesReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(labelsApi.middleware),
 });
-
-export default store;
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

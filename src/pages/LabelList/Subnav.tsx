@@ -3,7 +3,8 @@ import { PrimaryButton } from '../../components/buttons/Button';
 import ButtonGroup from '../../components/buttons/ButtonGroup';
 import { TagIcon, MilestoneIcon, SearchIcon } from '@primer/octicons-react';
 import { useState } from 'react';
-import LebelForm from './LabelForm';
+import LabelForm from './LabelForm';
+import { useAddLabelMutation } from '../../redux/labelsApi';
 
 const Wrapper = styled.div`
   display: flex;
@@ -71,15 +72,17 @@ const buttons = [
 
 function Subnav() {
   const [isCreating, setIsCreating] = useState(false);
+  const [addLabel] = useAddLabelMutation();
 
-  const handelCreate = () => {
+  const handleCreate = async (labelForm) => {
     console.log('create');
+    await addLabel(labelForm);
   };
 
   const LabelFormType = {
     name: 'create',
-    handelCancel: setIsCreating,
-    handelCreate: handelCreate,
+    handleCancel: setIsCreating,
+    handleCreate: handleCreate,
   };
   return (
     <>
@@ -95,7 +98,7 @@ function Subnav() {
       </Wrapper>
       {isCreating && (
         <CreateContainer>
-          <LebelForm type={LabelFormType} />
+          <LabelForm type={LabelFormType} label={null} />
         </CreateContainer>
       )}
     </>
