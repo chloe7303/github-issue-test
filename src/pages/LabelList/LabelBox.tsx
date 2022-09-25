@@ -62,7 +62,7 @@ const SelectMenu = styled.div`
 `;
 
 const MenuHeader = styled.div`
-  padding: 8px 10px;
+  padding: 10px;
   font-weight: 600;
   border-bottom: 1px solid hsla(210, 18%, 87%, 1);
   font-size: 12px;
@@ -71,7 +71,7 @@ const MenuHeader = styled.div`
 const MenuList = styled.div``;
 
 const MenuItem = styled.div`
-  padding: 8px 8px 8px 30px;
+  padding: 8px;
   border-bottom: 1px solid ${({ theme }) => theme.border};
   font-size: 12px;
   cursor: pointer;
@@ -82,13 +82,22 @@ const MenuItem = styled.div`
   }
 `;
 
-const CheckIconWrap = styled(CheckIcon)`
-  float: left;
-  margin-left: -20px;
+type CheckIconWrapProp = {
+  hidden: boolean;
+};
+const CheckIconWrap = styled(CheckIcon)<CheckIconWrapProp>`
+  margin-right: 5px;
+  visibility: ${({ hidden }) => hidden && 'hidden'}; ;
 `;
 
 const LabelList = styled.div``;
 
+const sortList = [
+  'Alphabetically',
+  'Reverse alphabetically',
+  'Most issues',
+  'Fewest issues',
+];
 // type LabelType = {
 //   id: number;
 //   node_id: string;
@@ -114,13 +123,12 @@ const LabelBox = () => {
           <SelectMenu>
             <MenuHeader>header</MenuHeader>
             <MenuList>
-              <MenuItem>
-                <CheckIconWrap />
-                Alphabetically
-              </MenuItem>
-              <MenuItem>Reverse alphabetically</MenuItem>
-              <MenuItem>Most issues</MenuItem>
-              <MenuItem>Fewest issues</MenuItem>
+              {sortList.map((item, index) => (
+                <MenuItem key={index}>
+                  <CheckIconWrap hidden={index !== 0} />
+                  {item}
+                </MenuItem>
+              ))}
             </MenuList>
           </SelectMenu>
         </Details>

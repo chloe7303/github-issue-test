@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import Button from './Button';
 
 const Tabs = styled.div`
   margin-right: 8px;
@@ -11,7 +10,21 @@ const activeStyle = css`
   color: #fff;
 `;
 
-const Tab = styled(Button)`
+type TabProp = {
+  active: boolean;
+};
+const Tab = styled.button<TabProp>`
+  padding: 5px 16px;
+  font-weight: 500;
+  border-radius: 6px;
+  background-color: ${({ theme }) => theme.default};
+  color: #24292f;
+  border: 1px solid ${({ theme }) => theme.border};
+  height: 32px;
+  cursor: pointer;
+  :hover {
+    background-color: #f3f4f6;
+  }
   background-color: ${({ theme }) => theme.light};
   ${({ active }) => active && activeStyle};
   border-radius: ${({ index }) =>

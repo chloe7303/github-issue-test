@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { SyncIcon } from '@primer/octicons-react';
-import Button, { PrimaryButton } from '../../components/buttons/Button';
+import Button from '../../components/buttons/Button';
 import { useState } from 'react';
 import Label from './Label';
 import {
@@ -163,18 +163,15 @@ const ButtonGroup = styled.div`
   }
 `;
 
-const Cancel = styled(Button)`
+const CancelButton = styled.span`
+  margin-right: 8px;
   @media screen and (max-width: 768px) {
     margin-left: 8px;
   }
 `;
 
-type ActionProp = {
-  disabled: boolean;
-};
-const Action = styled(PrimaryButton)<ActionProp>`
+const Action = styled(Button)`
   margin-left: 8px;
-  background-color: ${({ disabled }) => (disabled ? '#94d3a2' : '#2da44e')};
   @media screen and (max-width: 768px) {
     margin-left: 0;
   }
@@ -204,7 +201,6 @@ const LabelForm = ({ type, label }) => {
   const [isDataFetching, setIsDataFetching] = useState(false);
   const [addLabel] = useAddLabelMutation();
   const [updateLabel] = useUpdateLabelMutation();
-  console.log(type.name, label);
   const initialLabelForm =
     type.name === 'edit'
       ? { name: label.name, description: label.description, color: label.color }
@@ -214,7 +210,6 @@ const LabelForm = ({ type, label }) => {
           color: 'b60205',
         };
   const [labelForm, setlabelForm] = useState(initialLabelForm);
-
   const generateRandomColor = () => {
     let randomHexCode = Math.floor(Math.random() * 16777215).toString(16);
     while (randomHexCode.length < 6) randomHexCode = generateRandomColor();
@@ -237,7 +232,7 @@ const LabelForm = ({ type, label }) => {
     return !(labelForm.name && labelForm.color);
   };
   const handleColorCodeChange = (e) => {
-    setlabelForm({ ...labelForm, color: e.target.value });
+    setlabelForm({ ...labelForm, color: e.target.value.slice(1, 7) });
   };
 
   const handleCreate = async () => {
@@ -253,9 +248,9 @@ const LabelForm = ({ type, label }) => {
   };
 
   const handleSave = async () => {
-    console.log('save update');
+    console.log('save changes');
     setIsDataFetching(true);
-    await updateLabel(labelForm);
+    await updateLabel({ name: label.name, body: labelForm });
     setIsDataFetching(false);
     type.handleCancel(false);
   };
@@ -309,6 +304,8 @@ const LabelForm = ({ type, label }) => {
               onBlur={() => setShowColorSelector(false)}
               value={`#${labelForm.color}`}
               onChange={handleColorCodeChange}
+              pattern="#?([a-fA-F0-9]{6})"
+              maxLength={7}
             />
             <ColorSelector show={showColorSelector}>
               <Hint>Choose from default colors:</Hint>
@@ -338,21 +335,23 @@ const LabelForm = ({ type, label }) => {
           </ColorDd>
         </ColorDl>
         <ButtonGroup>
-          <Cancel onClick={() => type.handleCancel(false)}>Cancel</Cancel>
+          <CancelButton>
+            <Button text="Cancel" onClick={() => type.handleCancel(false)} />
+          </CancelButton>
           {type.name === 'edit' ? (
             <Action
               disabled={isActionDisabled() || isDataFetching}
+              primary={true}
               onClick={handleSave}
-            >
-              {isDataFetching ? 'Saving...' : 'Save changes'}
-            </Action>
+              text={isDataFetching ? 'Saving...' : 'Save changes'}
+            />
           ) : (
             <Action
               disabled={isActionDisabled() || isDataFetching}
+              primary={true}
               onClick={handleCreate}
-            >
-              {isDataFetching ? 'Saving...' : 'Create label'}
-            </Action>
+              text={isDataFetching ? 'Saving...' : 'Create label'}
+            />
           )}
         </ButtonGroup>
       </FormGroup>

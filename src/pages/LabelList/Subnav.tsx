@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PrimaryButton } from '../../components/buttons/Button';
+import Button from '../../components/buttons/Button';
 import ButtonGroup from '../../components/buttons/ButtonGroup';
 import { TagIcon, MilestoneIcon, SearchIcon } from '@primer/octicons-react';
 import { useState } from 'react';
@@ -42,7 +42,7 @@ const SearchIconWrap = styled(SearchIcon)`
   color: ${({ theme }) => theme.text};
 `;
 
-const AddButton = styled(PrimaryButton)`
+const AddButton = styled.div`
   margin-left: auto;
   @media screen and (max-width: 768px) {
     position: absolute;
@@ -94,7 +94,13 @@ function Subnav() {
             <SearchIconWrap />
           </SearchInputWrap>
         </Nav>
-        <AddButton onClick={() => setIsCreating(true)}>New label</AddButton>
+        <AddButton>
+          <Button
+            text="New label"
+            primary={true}
+            onClick={() => setIsCreating(true)}
+          />
+        </AddButton>
       </Wrapper>
       {isCreating && (
         <CreateContainer>

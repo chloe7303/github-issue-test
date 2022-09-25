@@ -1,29 +1,71 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
-    ml?: string;
-    active?: boolean;
+    margin?: string;
+    primary?: boolean;
     index?: number;
   }
 }
 
-const Button = styled.button`
+type ButtonProps = {
+  text: string;
+  margin?: string;
+  onClick?: () => void;
+  primary?: boolean;
+  disabled?: boolean;
+};
+
+const basicStyle = css`
   padding: 5px 16px;
   font-weight: 500;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.default};
-  color: #24292f;
   border: 1px solid ${({ theme }) => theme.border};
-  margin-left: ${({ ml }) => ml && `${ml}px`};
   height: 32px;
   cursor: pointer;
 `;
 
-export const PrimaryButton = styled(Button)`
-  background-color: ${({ theme }) => theme.primary};
-  border: 1px solid ${({ theme }) => theme.primary};
-  color: #fff;
+const Wrapper = styled.button`
+  ${basicStyle};
+  color: #24292f;
+  background-color: #f6f8fa;
+  border: 1px solid #d0d7de;
+  font-weight: 500;
+  margin: ${({ margin }) => margin && margin};
+  :hover {
+    background-color: #f3f4f6;
+  }
+  ${({ primary }) => primary && primaryStyle};
+  ${({ disabled }) => disabled && disabledStyle};
 `;
+
+const primaryStyle = css`
+  background-color: #2da44e;
+  border: 1px solid #2da44e;
+  color: #fff;
+  :hover {
+    background-color: #2c974b;
+  }
+`;
+
+const disabledStyle = css`
+  background-color: #94d3a2;
+  :hover {
+    background-color: #94d3a2;
+  }
+`;
+
+const Button = ({ text, margin, primary, disabled, onClick }: ButtonProps) => {
+  return (
+    <Wrapper
+      margin={margin}
+      primary={primary}
+      disabled={disabled}
+      onClick={onClick ? () => onClick() : () => {}}
+    >
+      {text}
+    </Wrapper>
+  );
+};
 
 export default Button;

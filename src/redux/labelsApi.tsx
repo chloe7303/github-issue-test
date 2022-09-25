@@ -3,7 +3,7 @@ import { Label } from '../models/label.model';
 
 const headers = {
   'Content-type': 'application/vnd.github+json',
-  Authorization: 'Bearer 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',
+  Authorization: 'Bearer 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',
 };
 
 // Define a service using a base URL and expected endpoints
@@ -15,7 +15,10 @@ export const labelsApi = createApi({
   tagTypes: ['Label'],
   endpoints: (builder) => ({
     labelList: builder.query<Label[], void>({
-      query: () => '/labels',
+      query: () => ({
+        url: '/labels',
+        headers,
+      }),
       providesTags: ['Label'],
     }),
     label: builder.query<Label, string>({
@@ -31,11 +34,11 @@ export const labelsApi = createApi({
       }),
       invalidatesTags: ['Label'],
     }),
-    updateLabel: builder.mutation<void, Label>({
-      query: (label) => ({
-        url: `/labels/${label.name}`,
+    updateLabel: builder.mutation<void, any>({
+      query: ({ name, body }) => ({
+        url: `/labels/${name}`,
         method: 'PATCH',
-        body: JSON.stringify(label),
+        body: JSON.stringify(body),
         headers,
       }),
       invalidatesTags: ['Label'],
