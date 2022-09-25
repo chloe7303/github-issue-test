@@ -3,7 +3,7 @@ import { Label } from '../models/label.model';
 
 const headers = {
   'Content-type': 'application/vnd.github+json',
-  Authorization: 'Bearer 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',
+  Authorization: `Bearer ${process.env.REACT_APP_PERSONAL_TOKEN}`,
 };
 
 // Define a service using a base URL and expected endpoints

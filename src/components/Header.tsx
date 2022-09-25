@@ -117,6 +117,7 @@ function Header() {
 
   useEffect(() => {
     checkUser();
+    console.log(process.env.REACT_APP_PERSONAL_TOKEN);
   }, []);
 
   function checkUser() {
