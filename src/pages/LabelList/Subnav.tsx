@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Button from '../../components/buttons/Button';
-import ButtonGroup from '../../components/buttons/ButtonGroup';
+import Tabs from '../../components/buttons/Tabs';
 import { TagIcon, MilestoneIcon, SearchIcon } from '@primer/octicons-react';
 import { useState } from 'react';
 import LabelForm from './LabelForm';
@@ -88,7 +88,7 @@ function Subnav() {
     <>
       <Wrapper>
         <Nav>
-          <ButtonGroup buttons={buttons} />
+          <Tabs buttons={buttons} />
           <SearchInputWrap>
             <SearchInput placeholder="Search all labels" />
             <SearchIconWrap />
