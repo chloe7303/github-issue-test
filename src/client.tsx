@@ -1,9 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
+const url =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_SUPABASE_URL
+    : process.env.REACT_APP_DEV_SUPABASE_URL;
+
+const key =
+  process.env.NODE_ENV === 'production'
+    ? process.env.REACT_APP_SUPABASE_KEY
+    : process.env.REACT_APP_DEV_SUPABASE_KEY;
+
 // Create a single supabase client for interacting with your database
-const supabase = createClient(
-  'https://wsknhbcixphhxnwfgeeh.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indza25oYmNpeHBoaHhud2ZnZWVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjM1NzI4MzEsImV4cCI6MTk3OTE0ODgzMX0.jzVCnvHHGQeaMfhvbxFsIC5HvoLZ1Nmj7Gsynh5E2S4'
-);
+const supabase = createClient(url as string, key as string);
 
 export { supabase };
