@@ -9,7 +9,7 @@ import {
 } from '@primer/octicons-react';
 
 const Wrapper = styled.header`
-  background-color: #161b22;
+  background-color: #24292f;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -117,7 +117,7 @@ function Header() {
 
   useEffect(() => {
     checkUser();
-    console.log(process.env.REACT_APP_PERSONAL_TOKEN);
+    console.log(process.env.REACT_APP_PERSONAL_TOKEN, process.env.NODE_ENV);
   }, []);
 
   function checkUser() {

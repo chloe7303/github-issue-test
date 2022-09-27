@@ -22,7 +22,10 @@ const List = styled.div`
   display: flex;
 `;
 
-const Item = styled.li`
+type ItemProp = {
+  active?: boolean;
+};
+const Item = styled.li<ItemProp>`
   font-size: 14px;
   padding: 15px 15px;
   display: flex;

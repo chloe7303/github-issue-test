@@ -57,6 +57,7 @@ const ListButton = styled.button`
   cursor: pointer;
   font-size: 12px;
   border: 0;
+  margin-left: 16px;
   background: none;
   color: ${({ theme }) => theme.text};
   visibility: ${({ isEdit }) => isEdit && 'hidden'};

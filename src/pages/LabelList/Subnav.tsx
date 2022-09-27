@@ -61,12 +61,12 @@ const CreateContainer = styled.div`
 const buttons = [
   {
     text: 'Labels',
-    icon: <TagIcon />,
+    icon: <TagIcon verticalAlign="middle" />,
     active: true,
   },
   {
     text: 'Milestones',
-    icon: <MilestoneIcon />,
+    icon: <MilestoneIcon verticalAlign="middle" />,
   },
 ];
 

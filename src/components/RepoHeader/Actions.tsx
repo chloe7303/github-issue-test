@@ -21,7 +21,9 @@ const Wrapper = styled.div`
 
 const ActionButton = styled.button`
   margin-right: 8px;
-  ${({ count }) => (count ? 'padding: 3px 12px' : 'padding: 5px 12px')};
+  font-size: 12px;
+  font-weight: 500;
+  ${({ count }) => (count ? 'padding: 3px 15px' : 'padding: 5px 15px')};
   ${({ count }) => !count && 'vertical-align: bottom'};
   border-radius: 6px;
   background-color: transparent;
@@ -63,25 +65,25 @@ const Actions = () => {
   return (
     <Wrapper>
       <ActionButton>
-        <PinIcon />
+        <PinIcon verticalAlign="middle" />
         <Text>Pin</Text>
       </ActionButton>
       <ActionButton count={true}>
-        <EyeIcon />
+        <EyeIcon verticalAlign="middle" />
         <Text>Unwatch</Text>
         <Counter>1</Counter>
         <DropdownCaret />
       </ActionButton>
       <ActionButton count={true}>
-        <RepoForkedIcon />
+        <RepoForkedIcon verticalAlign="middle" />
         <Text>Fork</Text>
         <Counter>0</Counter>
         <DropdownCaret />
       </ActionButton>
       <ActionButton count={true}>
-        <StarIcon />
+        <StarIcon verticalAlign="middle" />
         <Text>Star</Text>
-        <Counter>o</Counter>
+        <Counter>0</Counter>
         <DropdownCaret />
       </ActionButton>
     </Wrapper>

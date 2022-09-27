@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 const Wrapper = styled.div`
   margin-right: 8px;
+  font-size: 14px;
 `;
 
 const activeStyle = css`
