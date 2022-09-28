@@ -1,6 +1,7 @@
 import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
 import IssueItem from './IssueItem';
 import Dropdown from './Dropdown';
+import FilterDropdown from './FilterDropdown';
 
 const sortList = [
   'Newest',
@@ -11,6 +12,39 @@ const sortList = [
   'Least recently updated',
 ];
 
+const boxHeaderList = [
+  {
+    title: 'Author',
+  },
+  {
+    title: 'Label',
+    component: (
+      <FilterDropdown
+        header={'Filter by Label'}
+        subHeader={'Assigned to nobody'}
+      />
+    ),
+  },
+  {
+    title: 'Projects',
+  },
+  {
+    title: 'Milestones',
+  },
+  {
+    title: 'Assignee',
+    component: (
+      <FilterDropdown
+        header={"Filter by who's assigned"}
+        subHeader={'assigned'}
+      />
+    ),
+  },
+  {
+    title: 'Sorts',
+    component: <Dropdown header={'Sort by'} sortList={sortList} />,
+  },
+];
 const IssueBox = () => {
   return (
     <>
@@ -43,33 +77,22 @@ const IssueBox = () => {
             </a>
           </div>
           <div className="flex justify-between sm:justify-start lg:justify-end grow text-sm text-[#57606a]">
-            <div className="px-[16px]">
-              Author
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
-            <div className="px-[16px]">
-              Label
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
-            <div className="px-[16px] hidden md:block">
-              Projects
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
-            <div className="px-[16px] hidden md:block">
-              Milestones
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
-            <div className="px-[16px]">
-              Assignee
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
-            <details className="relative pl-[16px]">
-              <summary className="flex items-center">
-                Sort
-                <span className="inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-2"></span>
-              </summary>
-              <Dropdown header={'Sort by'} sortList={sortList} />
-            </details>
+            {boxHeaderList.map((item, index) => {
+              return index === 2 || index === 3 ? (
+                <div key={index} className="px-[16px] hidden md:block">
+                  {item.title}
+                  <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
+                </div>
+              ) : (
+                <details key={index} className="relative px-[16px]">
+                  <summary className="flex items-center">
+                    {item.title}
+                    <span className="inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-2"></span>
+                  </summary>
+                  {item.component}
+                </details>
+              );
+            })}
           </div>
         </div>
         {/* list item */}
