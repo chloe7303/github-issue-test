@@ -20,6 +20,7 @@ module.exports = {
         light: '#fff',
         border: '#d0d7de',
         text: '#57606a',
+        shadow: 'rgba(140, 149, 159, 0.2)',
       },
     },
   },

@@ -1,5 +1,15 @@
 import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
 import IssueItem from './IssueItem';
+import Dropdown from './Dropdown';
+
+const sortList = [
+  'Newest',
+  'Oldest',
+  'Most commented',
+  'Least commented',
+  'Recently updated',
+  'Least recently updated',
+];
 
 const IssueBox = () => {
   return (
@@ -53,10 +63,13 @@ const IssueBox = () => {
               Assignee
               <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
             </div>
-            <div className="pl-[16px]">
-              Sort
-              <span className="hidden sm:inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-1"></span>
-            </div>
+            <details className="relative pl-[16px]">
+              <summary className="flex items-center">
+                Sort
+                <span className="inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-2"></span>
+              </summary>
+              <Dropdown header={'Sort by'} sortList={sortList} />
+            </details>
           </div>
         </div>
         {/* list item */}
