@@ -1,4 +1,3 @@
-import { CheckIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components';
 import LabelItem from './LabelItem';
 import { useLabelListQuery } from '../../redux/labelsApi';

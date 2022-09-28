@@ -1,22 +1,14 @@
-import styled from 'styled-components';
 import Subnav from './Subnav';
 import IssueBox from './IssueBox';
-
-const Wrapper = styled.div`
-  padding: 24px 32px;
-  max-width: 1280px;
-  margin-inline: auto;
-  @media screen and (max-width: 768px) {
-    padding-inline: 16px;
-  }
-`;
+import Pagination from './Pagination';
 
 const IssueList = () => {
   return (
-    <Wrapper>
-      {/* <Subnav /> */}
+    <div className="py-[24px] max-w-[1280px] mx-auto sm:px-[16px] md:px-[24px] lg:px-[32px]">
+      <Subnav />
       <IssueBox />
-    </Wrapper>
+      <Pagination />
+    </div>
   );
 };
 
