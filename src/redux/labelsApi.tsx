@@ -51,6 +51,13 @@ export const labelsApi = createApi({
       }),
       invalidatesTags: ['Label'],
     }),
+    // Isssue List Page
+    issueList: builder.query<[], string>({
+      query: (state) => ({
+        url: `/issues?state=${state}`,
+        headers,
+      }),
+    }),
   }),
 });
 
@@ -61,4 +68,6 @@ export const {
   useAddLabelMutation,
   useUpdateLabelMutation,
   useDeleteLabelMutation,
+  // Isssue List Page
+  useIssueListQuery,
 } = labelsApi;
