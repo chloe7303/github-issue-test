@@ -2,16 +2,17 @@ import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
 import IssueItem from './IssueItem';
 import Dropdown from './Dropdown';
 import FilterDropdown from './FilterDropdown';
-import { createContext, useState } from 'react';
 import { useIssueListQuery } from '../../redux/labelsApi';
+import { filterParamContext, filterParamContextInterface } from './IssueList';
+import { useContext } from 'react';
 
 const sortList = [
-  'Newest',
-  'Oldest',
-  'Most commented',
-  'Least commented',
-  'Recently updated',
-  'Least recently updated',
+  { title: 'Newest', action: '' },
+  { title: 'Oldest', action: '' },
+  { title: 'Most commented', action: '' },
+  { title: 'Least commented', action: '' },
+  { title: 'Recently updated', action: '' },
+  { title: 'Least recently updated', action: '' },
 ];
 
 const boxHeaderList = [
@@ -47,21 +48,25 @@ const boxHeaderList = [
     component: <Dropdown header={'Sort by'} sortList={sortList} />,
   },
 ];
-export const IssueListContext = createContext({});
-const IssueBox = () => {
-  const [issueList, setIssueList] = useState([]);
 
+const IssueBox = () => {
+  const { filterParam, setFilterParam } = useContext(
+    filterParamContext
+  ) as filterParamContextInterface;
+  const filterParamApi =
+    (filterParam.filters ? `?${filterParam.filters}&` : '?') +
+    `state=${filterParam.state}&labels=${filterParam.labels}&sort=${filterParam.sort}`;
   const { data, error, isLoading, isFetching, isSuccess } =
-    useIssueListQuery('open');
-  // const [issueList] = useIssueListQuery();
+    useIssueListQuery(filterParamApi);
 
   return (
-    <IssueListContext.Provider value={{ issueList, setIssueList }}>
+    <>
       <div className="px-4 sm:px-0 lg:hidden mb-4 ">
-        <a href="#/" className="text-sm font-semibold">
-          <IssueOpenedIcon className="mr-2" verticalAlign="middle" />5 Open
+        <a href="#/" className="text-sm font-semibold cursor-pointer">
+          <IssueOpenedIcon className="mr-2" verticalAlign="middle" />
+          10 Open
         </a>
-        <a href="#/" className="text-sm text-text ml-4">
+        <a href="#/" className="text-sm text-text ml-4 cursor-pointer">
           <CheckIcon
             size={16}
             className="fill-text mr-1"
@@ -73,17 +78,35 @@ const IssueBox = () => {
       <div className="rounded-none sm:rounded-md border border-solid border-[#d0d7de]">
         <div className="rounded-tl-md rounded-tr-md bg-[#f6f8fa] p-[16px] flex justify-between">
           <div className="px-4 sm:px-0 hidden lg:block">
-            <a href="#/" className="text-sm font-semibold">
-              <IssueOpenedIcon className="mr-2" verticalAlign="middle" />5 Open
-            </a>
-            <a href="#/" className="text-sm text-text ml-4">
+            <span
+              className="text-sm font-semibold cursor-pointer"
+              onClick={setFilterParam((prevValue) => ({
+                ...prevValue,
+                state: 'open',
+              }))}
+            >
+              <IssueOpenedIcon
+                className="mr-2 cursor-pointer"
+                verticalAlign="middle"
+              />
+              10 Open
+            </span>
+            <span
+              className="text-sm text-text ml-4 cursor-pointer"
+              onClick={() =>
+                setFilterParam((prevValue) => ({
+                  ...prevValue,
+                  state: 'closed',
+                }))
+              }
+            >
               <CheckIcon
                 size={16}
                 className="fill-text mr-1"
                 verticalAlign="middle"
               />
               1 Closed
-            </a>
+            </span>
           </div>
           <div className="flex justify-between sm:justify-start lg:justify-end grow text-sm text-[#57606a]">
             {boxHeaderList.map((item, index) => {
@@ -115,7 +138,7 @@ const IssueBox = () => {
             })}
           <IssueItem
             issue={{
-              title: 'this is new issue',
+              title: '這是本地我自己寫的',
               number: 99,
               created_at: '2022-09-26T08:59:56Z',
               user: { login: 'Jessica' },
@@ -139,7 +162,7 @@ const IssueBox = () => {
           />
         </div>
       </div>
-    </IssueListContext.Provider>
+    </>
   );
 };
 

@@ -1,6 +1,14 @@
 import { CheckIcon, XIcon } from '@primer/octicons-react';
+import { useState } from 'react';
 
 const Dropdown = ({ header, sortList }) => {
+  const [currentFilter, setCurrentFilter] = useState();
+
+  const handleFilter = (item) => {
+    setCurrentFilter(item.title);
+    item.action();
+  };
+
   return (
     <div className="absolute left-0 w-[300px] rounded-md bg-light border border-solid border-border mt-2 shadow-md shadow-shadow">
       <div className="px-4 py-2 font-semibold border-b border-solid border-border text-xs flex justify-between">
@@ -14,11 +22,14 @@ const Dropdown = ({ header, sortList }) => {
           <div
             key={index}
             className="p-2 border-b border-solid border-border text-xs cursor-pointer hover:bg-default"
+            onClick={() => handleFilter(item)}
           >
-            <span className={`mr-2 ${index !== 0 && 'invisible'}`}>
+            <span
+              className={`mr-2 ${currentFilter !== item.title && 'invisible'}`}
+            >
               <CheckIcon />
             </span>
-            {item}
+            {item.title}
           </div>
         ))}
       </div>

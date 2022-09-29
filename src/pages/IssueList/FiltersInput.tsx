@@ -1,17 +1,46 @@
 import { useState } from 'react';
 import { SearchIcon } from '@primer/octicons-react';
 import Dropdown from './Dropdown';
-
-const sortList = [
-  'Open issues and pull requests',
-  'Your issues',
-  'Your pull requests',
-  'Everything assigned to you',
-  'Everything mentioning you',
-];
+import { filterParamContext, filterParamContextInterface } from './IssueList';
+import { useContext } from 'react';
 
 const FiltersInput = () => {
   const [filterInputText, setFilterInputText] = useState('is:issue is:open');
+  const { filterParam, setFilterParam } = useContext(
+    filterParamContext
+  ) as filterParamContextInterface;
+
+  const sortList = [
+    { title: 'Open issues and pull requests' },
+    {
+      title: 'Your issues',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          filters: 'creator=chloe7303',
+        })),
+      inputTextTitle: 'author',
+    },
+    { title: 'Your pull requests' },
+    {
+      title: 'Everything assigned to you',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          filters: 'assignee=chloe7303',
+        })),
+      inputTextTitle: 'assignee',
+    },
+    {
+      title: 'Everything mentioning you',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          filters: 'mentioned=chloe7303',
+        })),
+      inputTextTitle: 'mentions',
+    },
+  ];
 
   return (
     <div className="flex w-full my-6 md:order-first md:w-auto md:mt-0 md:grow md:mr-4">

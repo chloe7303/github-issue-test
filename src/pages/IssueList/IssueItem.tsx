@@ -1,4 +1,8 @@
-import { IssueOpenedIcon, CommentIcon } from '@primer/octicons-react';
+import {
+  IssueOpenedIcon,
+  CommentIcon,
+  IssueClosedIcon,
+} from '@primer/octicons-react';
 
 const IssueItem = ({ issue }) => {
   const computedIssueCreatedTime = (createdTime) => {
@@ -20,7 +24,8 @@ const IssueItem = ({ issue }) => {
   if (issue.pull_request) return <></>;
   return (
     <div className="px-4 py-3 flex border-t border-border border-solid hover:bg-default">
-      <IssueOpenedIcon className="fill-primary" />
+      {issue.state === 'open' && <IssueOpenedIcon className="fill-primary" />}
+      {issue.state === 'closed' && <IssueClosedIcon className="fill-done" />}
       <div className="px-2 grow">
         <span className="font-semibold mr-1">{issue.title}</span>
 

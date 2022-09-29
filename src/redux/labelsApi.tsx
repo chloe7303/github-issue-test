@@ -53,8 +53,8 @@ export const labelsApi = createApi({
     }),
     // Isssue List Page
     issueList: builder.query<[], string>({
-      query: (state) => ({
-        url: `/issues?state=${state}`,
+      query: (filter) => ({
+        url: `/issues${filter}`,
         headers,
       }),
     }),
