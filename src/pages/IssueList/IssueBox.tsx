@@ -22,10 +22,7 @@ const boxHeaderList = [
   {
     title: 'Label',
     component: (
-      <FilterDropdown
-        header={'Filter by Label'}
-        subHeader={'Assigned to nobody'}
-      />
+      <FilterDropdown header={'Filter by Label'} subHeader={'Unlabeled'} />
     ),
   },
   {
@@ -39,7 +36,7 @@ const boxHeaderList = [
     component: (
       <FilterDropdown
         header={"Filter by who's assigned"}
-        subHeader={'assigned'}
+        subHeader={'Assigned to nobody'}
       />
     ),
   },
@@ -80,10 +77,12 @@ const IssueBox = () => {
           <div className="px-4 sm:px-0 hidden lg:block">
             <span
               className="text-sm font-semibold cursor-pointer"
-              onClick={setFilterParam((prevValue) => ({
-                ...prevValue,
-                state: 'open',
-              }))}
+              onClick={() =>
+                setFilterParam((prevValue) => ({
+                  ...prevValue,
+                  state: 'open',
+                }))
+              }
             >
               <IssueOpenedIcon
                 className="mr-2 cursor-pointer"

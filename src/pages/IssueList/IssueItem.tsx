@@ -2,6 +2,7 @@ import {
   IssueOpenedIcon,
   CommentIcon,
   IssueClosedIcon,
+  SkipIcon,
 } from '@primer/octicons-react';
 
 const IssueItem = ({ issue }) => {
@@ -25,7 +26,12 @@ const IssueItem = ({ issue }) => {
   return (
     <div className="px-4 py-3 flex border-t border-border border-solid hover:bg-default">
       {issue.state === 'open' && <IssueOpenedIcon className="fill-primary" />}
-      {issue.state === 'closed' && <IssueClosedIcon className="fill-done" />}
+      {issue.state === 'closed' && issue.state_reason === 'completed' && (
+        <IssueClosedIcon className="fill-done" />
+      )}
+      {issue.state === 'closed' && issue.state_reason === 'not_planned' && (
+        <SkipIcon className="fill-muted" />
+      )}
       <div className="px-2 grow">
         <span className="font-semibold mr-1">{issue.title}</span>
 
@@ -57,9 +63,14 @@ const IssueItem = ({ issue }) => {
           })}
         </span>
         <div className="text-text text-xs mt-1">
-          {`#${issue.number} opened ${computedIssueCreatedTime(
-            issue.created_at
-          )} by ${issue.user.login}`}
+          {issue.state === 'open' &&
+            `#${issue.number} opened ${computedIssueCreatedTime(
+              issue.created_at
+            )} by ${issue.user.login}`}
+          {issue.state === 'closed' &&
+            `#${issue.number} by ${
+              issue.user.login
+            } was closed ${computedIssueCreatedTime(issue.created_at)}`}
         </div>
       </div>
       <div className="w-1/4 hidden sm:flex">
