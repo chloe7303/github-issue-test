@@ -12,7 +12,7 @@ export const filterParamContext =
 interface filterParamInterface {
   filters: string;
   state: string;
-  labels: '';
+  labels: [];
   assignee: string;
   sort: string;
 }
@@ -20,7 +20,7 @@ const IssueList = () => {
   const initialFilterParam: filterParamInterface = {
     filters: '',
     state: 'open',
-    labels: '',
+    labels: [],
     assignee: '',
     sort: '',
   };

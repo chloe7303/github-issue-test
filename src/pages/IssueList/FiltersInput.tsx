@@ -15,29 +15,38 @@ const FiltersInput = () => {
     {
       title: 'Your issues',
       action: () =>
-        setFilterParam((prevValue) => ({
-          ...prevValue,
+        setFilterParam({
           filters: 'creator=chloe7303',
-        })),
+          state: 'open',
+          labels: [],
+          assignee: '',
+          sort: '',
+        }),
       inputTextTitle: 'author',
     },
     { title: 'Your pull requests' },
     {
       title: 'Everything assigned to you',
       action: () =>
-        setFilterParam((prevValue) => ({
-          ...prevValue,
+        setFilterParam({
           filters: 'assignee=chloe7303',
-        })),
+          state: 'open',
+          labels: [],
+          assignee: '',
+          sort: '',
+        }),
       inputTextTitle: 'assignee',
     },
     {
       title: 'Everything mentioning you',
       action: () =>
-        setFilterParam((prevValue) => ({
-          ...prevValue,
+        setFilterParam({
           filters: 'mentioned=chloe7303',
-        })),
+          state: 'open',
+          labels: [],
+          assignee: '',
+          sort: '',
+        }),
       inputTextTitle: 'mentions',
     },
   ];

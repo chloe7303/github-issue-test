@@ -6,62 +6,108 @@ import { useIssueListQuery } from '../../redux/labelsApi';
 import { filterParamContext, filterParamContextInterface } from './IssueList';
 import { useContext } from 'react';
 
-const sortList = [
-  { title: 'Newest', action: '' },
-  { title: 'Oldest', action: '' },
-  { title: 'Most commented', action: '' },
-  { title: 'Least commented', action: '' },
-  { title: 'Recently updated', action: '' },
-  { title: 'Least recently updated', action: '' },
-];
-
-const boxHeaderList = [
-  {
-    title: 'Author',
-  },
-  {
-    title: 'Label',
-    component: (
-      <FilterDropdown header={'Filter by Label'} subHeader={'Unlabeled'} />
-    ),
-  },
-  {
-    title: 'Projects',
-  },
-  {
-    title: 'Milestones',
-  },
-  {
-    title: 'Assignee',
-    component: (
-      <FilterDropdown
-        header={"Filter by who's assigned"}
-        subHeader={'Assigned to nobody'}
-      />
-    ),
-  },
-  {
-    title: 'Sorts',
-    component: <Dropdown header={'Sort by'} sortList={sortList} />,
-  },
-];
-
 const IssueBox = () => {
   const { filterParam, setFilterParam } = useContext(
     filterParamContext
   ) as filterParamContextInterface;
+
+  const param =
+    (filterParam.state && `state=${filterParam.state}`) +
+    (filterParam.labels && `&labels=${filterParam.labels}`) +
+    (filterParam.sort && `&${filterParam.sort}`) +
+    (filterParam.assignee && `&assignee=${filterParam.assignee}`);
   const filterParamApi =
-    (filterParam.filters ? `?${filterParam.filters}&` : '?') +
-    `state=${filterParam.state}&labels=${filterParam.labels}&sort=${filterParam.sort}`;
+    (filterParam.filters ? `?${filterParam.filters}&` : '?') + param;
   const { data, error, isLoading, isFetching, isSuccess } =
     useIssueListQuery(filterParamApi);
 
+  const sortList = [
+    {
+      title: 'Newest',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=created',
+        })),
+    },
+    {
+      title: 'Oldest',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=created&direction=asc',
+        })),
+    },
+    {
+      title: 'Most commented',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=comments',
+        })),
+    },
+    {
+      title: 'Least commented',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=comments&direction=asc',
+        })),
+    },
+    {
+      title: 'Recently updated',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=updated',
+        })),
+    },
+    {
+      title: 'Least recently updated',
+      action: () =>
+        setFilterParam((prevValue) => ({
+          ...prevValue,
+          sort: 'sort=updated&direction=asc',
+        })),
+    },
+  ];
+
+  const boxHeaderList = [
+    {
+      title: 'Author',
+    },
+    {
+      title: 'Label',
+      component: (
+        <FilterDropdown header={'Filter by Label'} subHeader={'Unlabeled'} />
+      ),
+    },
+    {
+      title: 'Projects',
+    },
+    {
+      title: 'Milestones',
+    },
+    {
+      title: 'Assignee',
+      component: (
+        <FilterDropdown
+          header={"Filter by who's assigned"}
+          subHeader={'Assigned to nobody'}
+        />
+      ),
+    },
+    {
+      title: 'Sort',
+      component: <Dropdown header={'Sort by'} sortList={sortList} />,
+    },
+  ];
   return (
     <>
       <div className="px-4 sm:px-0 lg:hidden mb-4 ">
         <a href="#/" className="text-sm font-semibold cursor-pointer">
           <IssueOpenedIcon className="mr-2" verticalAlign="middle" />
-          10 Open
+          Open
         </a>
         <a href="#/" className="text-sm text-text ml-4 cursor-pointer">
           <CheckIcon
@@ -69,7 +115,7 @@ const IssueBox = () => {
             className="fill-text mr-1"
             verticalAlign="middle"
           />
-          1 Closed
+          Closed
         </a>
       </div>
       <div className="rounded-none sm:rounded-md border border-solid border-[#d0d7de]">
@@ -88,7 +134,7 @@ const IssueBox = () => {
                 className="mr-2 cursor-pointer"
                 verticalAlign="middle"
               />
-              10 Open
+              Open
             </span>
             <span
               className="text-sm text-text ml-4 cursor-pointer"
@@ -104,7 +150,7 @@ const IssueBox = () => {
                 className="fill-text mr-1"
                 verticalAlign="middle"
               />
-              1 Closed
+              Closed
             </span>
           </div>
           <div className="flex justify-between sm:justify-start lg:justify-end grow text-sm text-[#57606a]">
@@ -132,33 +178,21 @@ const IssueBox = () => {
           {isFetching && <h2>Fetching...</h2>}
           {error && <h2>Something went wrong</h2>}
           {isSuccess &&
-            data.map((issue, index) => {
-              return <IssueItem key={index} issue={issue} />;
-            })}
-          <IssueItem
-            issue={{
-              title: '這是本地我自己寫的',
-              number: 99,
-              created_at: '2022-09-26T08:59:56Z',
-              user: { login: 'Jessica' },
-              labels: [{ description: 'this is label' }],
-              comments: 5,
-              assignees: [
-                {
-                  avatar_url:
-                    'https://avatars.githubusercontent.com/u/57607232?v=4',
-                },
-                {
-                  avatar_url:
-                    'https://avatars.githubusercontent.com/u/70333832?v=4',
-                },
-                {
-                  avatar_url:
-                    'https://avatars.githubusercontent.com/u/105163825?v=4',
-                },
-              ],
-            }}
-          />
+            (data.length === 0 ? (
+              <div className="text-center py-[80px]">
+                <IssueOpenedIcon size={25} />
+                <h1 className="my-8 text-2xl font-bold">
+                  No results matched your search.
+                </h1>
+                <p className="">
+                  You could search all of GitHub or try an advanced search.
+                </p>
+              </div>
+            ) : (
+              data.map((issue, index) => {
+                return <IssueItem key={index} issue={issue} />;
+              })
+            ))}
         </div>
       </div>
     </>

@@ -79,7 +79,9 @@ const IssueItem = ({ issue }) => {
           {issue.assignees.map((assignee, index) => (
             <img
               key={index}
-              className="h-[20px] w-[20px] rounded-[50%]"
+              className={`h-[20px] w-[20px] rounded-[50%] ${
+                index !== issue.assignees.length && 'mr-[-11px]'
+              } `}
               src={assignee.avatar_url}
               alt="avatar"
             />
