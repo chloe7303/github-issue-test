@@ -15,7 +15,9 @@ const IssueBox = () => {
     (filterParam.state && `state=${filterParam.state}`) +
     (filterParam.labels && `&labels=${filterParam.labels}`) +
     (filterParam.sort && `&${filterParam.sort}`) +
-    (filterParam.assignee && `&assignee=${filterParam.assignee}`);
+    (filterParam.assignee && `&assignee=${filterParam.assignee}`) +
+    (filterParam.page && `&page=${filterParam.page}`) +
+    '&per_page=25';
   const filterParamApi =
     (filterParam.filters ? `?${filterParam.filters}&` : '?') + param;
   const { data, error, isLoading, isFetching, isSuccess } =

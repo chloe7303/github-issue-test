@@ -15,6 +15,7 @@ interface filterParamInterface {
   labels: [];
   assignee: string;
   sort: string;
+  page: number;
 }
 const IssueList = () => {
   const initialFilterParam: filterParamInterface = {
@@ -23,6 +24,7 @@ const IssueList = () => {
     labels: [],
     assignee: '',
     sort: '',
+    page: 1,
   };
   const [filterParam, setFilterParam] = useState(initialFilterParam);
   const value: filterParamContextInterface = { filterParam, setFilterParam };
