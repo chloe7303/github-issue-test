@@ -56,7 +56,7 @@ const FilterDropdown = ({ header, subHeader }) => {
         {
           headers: {
             Accept: 'application/vnd.github+json',
-            Authorization: 'Bearer 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',
+            Authorization: `Bearer ${process.env.REACT_APP_PERSONAL_TOKEN}`,
           },
         }
       );
