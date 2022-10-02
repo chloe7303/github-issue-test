@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Label from '../../pages/LabelList/Label';
 
 export default {
-  title: 'Components/Label',
+  title: 'Components/LabelList/Label',
   component: Label,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout

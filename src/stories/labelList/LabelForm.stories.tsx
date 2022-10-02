@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 
 export default {
-  title: 'Components/LabelForm',
+  title: 'Components/LabelList/LabelForm',
   component: LabelForm,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout

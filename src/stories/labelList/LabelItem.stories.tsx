@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { store } from '../../redux/store';
 
 export default {
-  title: 'Components/LabelItem',
+  title: 'Components/LabelList/LabelItem',
   component: LabelItem,
   parameters: {
     // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout

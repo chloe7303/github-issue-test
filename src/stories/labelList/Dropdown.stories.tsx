@@ -3,7 +3,7 @@ import Dropdown from '../../components/buttons/Dropdown';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Components/Dropdown',
+  title: 'Components/LabelList/Dropdown',
   component: Dropdown,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {

@@ -35,7 +35,9 @@ const Subnav = () => {
         </div>
         <FiltersInput />
       </div>
-      {(state !== 'open' || !!(filters || labels || assignee || sort)) && (
+      {(state !== 'open' ||
+        !!(filters || assignee || sort) ||
+        labels.length !== 0) && (
         <div
           className="mb-4 px-4 sm:px-0 cursor-pointer"
           onClick={() =>
@@ -45,6 +47,7 @@ const Subnav = () => {
               labels: '',
               assignee: '',
               sort: '',
+              page: 1,
             })
           }
         >
