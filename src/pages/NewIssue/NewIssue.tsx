@@ -1,7 +1,13 @@
-import React from 'react';
+import Main from './Main';
+import Sidebar from './Sidebar';
 
 const NewIssue = () => {
-  return <div>NewIssue</div>;
+  return (
+    <div className="flex">
+      <Main />
+      <Sidebar />
+    </div>
+  );
 };
 
 export default NewIssue;
