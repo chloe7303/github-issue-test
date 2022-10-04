@@ -19,7 +19,7 @@ const Pagination = () => {
       <span
         className={`${
           filterParam.page !== 1 ? 'text-[#0969da]' : 'text-[#8c959f]'
-        } flex items-center py-1 px-2.5 border border-solid border-transparent hover:border-border hover:rounded-md`}
+        } flex items-center py-1 px-2.5 border border-solid border-transparent hover:border-border hover:rounded-md cursor-pointer`}
         onClick={handlePrevPage}
       >
         <ChevronLeftIcon className="mr-1" />
@@ -28,7 +28,7 @@ const Pagination = () => {
       <span
         className={`${
           filterParam.page !== 2 ? 'text-[#0969da]' : 'text-[#8c959f]'
-        } flex items-center py-1 px-2.5 border border-solid border-transparent hover:border-border hover:rounded-md`}
+        } flex items-center py-1 px-2.5 border border-solid border-transparent hover:border-border hover:rounded-md cursor-pointer`}
         onClick={handleNextPage}
       >
         <span>Next</span>

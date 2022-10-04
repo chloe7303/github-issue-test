@@ -35,7 +35,7 @@ const IssueItem = ({ issue }) => {
       <div className="px-2 grow">
         <span className="font-semibold mr-1">{issue.title}</span>
 
-        <span className="block lg:inline">
+        <span className="block lg:inline my-1">
           {issue.labels?.map((label, index) => {
             const lightOrDark = (bgColor = '000080') => {
               const r = parseInt(bgColor.slice(0, 2), 16);

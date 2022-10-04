@@ -41,7 +41,12 @@ const Tabs = ({ buttons }) => {
   return (
     <Wrapper>
       {buttons.map((button, index) => (
-        <Tab key={index} active={button.active} index={index}>
+        <Tab
+          key={index}
+          active={button.active}
+          index={index}
+          onClick={() => button.onClick && button.onClick()}
+        >
           {button.icon}
           <Text>{button.text}</Text>
           <span className="ml-1 px-1.5 bg-[#eff1f3] border border-solid border-[#eff1f3] rounded-full text-xs text-text text-center hidden md:inline-block">
