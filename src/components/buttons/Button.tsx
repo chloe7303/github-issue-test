@@ -5,6 +5,7 @@ declare module 'react' {
     margin?: string;
     primary?: boolean;
     index?: number;
+    stretching?: boolean;
   }
 }
 
@@ -14,6 +15,7 @@ type ButtonProps = {
   onClick?: () => void;
   primary?: boolean;
   disabled?: boolean;
+  stretching?: boolean;
 };
 
 const basicStyle = css`
@@ -38,6 +40,7 @@ const Wrapper = styled.button`
   }
   ${({ primary }) => primary && primaryStyle};
   ${({ disabled }) => disabled && disabledStyle};
+  ${({ stretching }) => stretching && 'width: 100%'};
 `;
 
 const primaryStyle = css`
@@ -56,12 +59,20 @@ const disabledStyle = css`
   }
 `;
 
-const Button = ({ text, margin, primary, disabled, onClick }: ButtonProps) => {
+const Button = ({
+  text,
+  margin,
+  primary,
+  disabled,
+  stretching,
+  onClick,
+}: ButtonProps) => {
   return (
     <Wrapper
       margin={margin}
       primary={primary}
       disabled={disabled}
+      stretching={stretching}
       onClick={onClick ? () => onClick() : () => {}}
     >
       {text}

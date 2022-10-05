@@ -24,7 +24,7 @@ const Tab = styled.button<TabProp>`
   height: 32px;
   cursor: pointer;
   :hover {
-    background-color: #f3f4f6;
+    ${({ active }) => !active && 'background-color: #f3f4f6'}
   }
   background-color: #fff;
   ${({ active }) => active && activeStyle};

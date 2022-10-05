@@ -82,10 +82,10 @@ const Main = () => {
           </div>
           <div className="m-2">
             <textarea
-              className="rounded-t-md text-[14px] text-text border-border border-t border-x border-solid bg-default p-2 w-full h-[200px] border-b-0"
+              className="rounded-md md:rounded-b-none text-[14px] text-text border-border border border-solid bg-default p-2 w-full h-[200px] md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer"
               placeholder="Leave a comment"
             ></textarea>
-            <div className="rounded-b-md text-[14px] border-border border-b border-x border-solid bg-default -mt-[3px] relative py-1.5">
+            <div className="rounded-b-md text-[14px] border-border border-b border-x border-solid bg-default relative py-1.5 hidden md:block peer-focus:border-emphasis peer-focus:border-2 peer-focus:border-t-0">
               <input type="file" className="w-full opacity-[.01]" />
               <div className="flex justify-between border-t border-dashed border-border absolute top-0 pt-2 px-3 w-full text-text pointer-events-none">
                 <span>Attach files by selecting or pasting them.</span>
@@ -101,7 +101,7 @@ const Main = () => {
             <Button text={'Submit new issue'} primary={true} disabled={true} />
           </div>
         </div>
-        <div className="text-[12px] m-2">
+        <div className="text-[12px] m-2 mb-6 leading-5">
           <InfoIcon className="mr-2" />
           Remember, contributions to this repository should follow our{' '}
           <span className="text-emphasis">GitHub Community Guidelines.</span>

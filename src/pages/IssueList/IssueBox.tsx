@@ -101,7 +101,13 @@ const IssueBox = () => {
     },
     {
       title: 'Sort',
-      component: <Dropdown header={'Sort by'} sortList={sortList} />,
+      component: (
+        <Dropdown
+          header={'Sort by'}
+          sortList={sortList}
+          defaultCurrentFilter={'Newest'}
+        />
+      ),
     },
   ];
   return (
