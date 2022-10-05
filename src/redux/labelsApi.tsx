@@ -58,6 +58,12 @@ export const labelsApi = createApi({
         headers,
       }),
     }),
+    assigneeList: builder.query<[], void>({
+      query: () => ({
+        url: '/assignees',
+        headers,
+      }),
+    }),
   }),
 });
 
@@ -70,4 +76,5 @@ export const {
   useDeleteLabelMutation,
   // Isssue List Page
   useIssueListQuery,
+  useAssigneeListQuery,
 } = labelsApi;

@@ -11,6 +11,7 @@ import {
   GearIcon,
   KebabHorizontalIcon,
 } from '@primer/octicons-react';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.ul`
   display: flex;
@@ -35,6 +36,7 @@ const Item = styled.li<ItemProp>`
   @media screen and (max-width: 1011px) {
     ${({ index }) => index! > 2 && 'display: none'};
   }
+  cursor: pointer;
 `;
 
 const Text = styled.span`
@@ -61,11 +63,17 @@ const lists = [
 ];
 
 const NavList = () => {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <List>
         {lists.map((list, index) => (
-          <Item key={index} active={list.active} index={index}>
+          <Item
+            key={index}
+            active={list.active}
+            index={index}
+            onClick={() => list.active && navigate('/')}
+          >
             {list.icon}
             <Text>{list.text}</Text>
           </Item>

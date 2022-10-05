@@ -2,9 +2,24 @@ import { CheckIcon, IssueOpenedIcon } from '@primer/octicons-react';
 import IssueItem from './IssueItem';
 import Dropdown from './Dropdown';
 import FilterDropdown from './FilterDropdown';
-import { useIssueListQuery } from '../../redux/labelsApi';
+import {
+  useIssueListQuery,
+  useLabelListQuery,
+  useAssigneeListQuery,
+} from '../../redux/labelsApi';
 import { filterParamContext, filterParamContextInterface } from './IssueList';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+
+type Label = {
+  name: string;
+  color: string;
+  description: string;
+};
+
+type Assignee = {
+  login: string;
+  avatar_url: string;
+};
 
 const IssueBox = () => {
   const { filterParam, setFilterParam } = useContext(
@@ -22,6 +37,25 @@ const IssueBox = () => {
     (filterParam.filters ? `?${filterParam.filters}&` : '?') + param;
   const { data, error, isLoading, isFetching, isSuccess } =
     useIssueListQuery(filterParamApi);
+
+  const { data: labelListData, isSuccess: getLabelListSuccess } =
+    useLabelListQuery();
+  const { data: assigneeListData, isSuccess: getAssigneeListSuccess } =
+    useAssigneeListQuery();
+  const [selectedLabels, setSelectedLabels] = useState<Label[]>([]);
+  const [selectedAssignee, setSelectedAssignee] = useState('');
+
+  const labelList = labelListData?.map((label) => ({
+    title: label.name,
+    description: label.description,
+    prefixElement: `<div class="mt-1 rounded-[2em] w-[1em] h-[1em] mr-2" style="background-color: #${label.color};"/>`,
+  }));
+
+  const assigneeList = assigneeListData?.map((assignee: Assignee) => ({
+    title: assignee.login,
+    prefixElement: `<img src=${assignee.avatar_url} alt="avatar" class="w-[20px] h-[20px] rounded-full mr-2"
+  />`,
+  }));
 
   const sortList = [
     {
@@ -81,7 +115,42 @@ const IssueBox = () => {
     {
       title: 'Label',
       component: (
-        <FilterDropdown header={'Filter by Label'} subHeader={'Unlabeled'} />
+        <FilterDropdown
+          header={'Filter by Label'}
+          subHeader={''}
+          resetHeader={{
+            title: 'Unlabeled',
+            action: () => {
+              setSelectedLabels([]);
+              setFilterParam((prevValue) => ({
+                ...prevValue,
+                labels: [],
+              }));
+            },
+          }}
+          inputPlaceholder={'Filter labels'}
+          selectedValue={selectedLabels}
+          handleSelect={(title) => {
+            if (selectedLabels.includes(title)) {
+              setSelectedLabels((prevValue) =>
+                prevValue.filter((label) => label !== title)
+              );
+              setFilterParam((prevValue) => ({
+                ...prevValue,
+                labels: selectedLabels.filter((label) => label !== title),
+              }));
+            } else {
+              setSelectedLabels((prevValue) => [...prevValue, title]);
+              setFilterParam((prevValue) => ({
+                ...prevValue,
+                labels: [...selectedLabels, title],
+              }));
+            }
+          }}
+          sortList={labelList}
+          getListSuccess={getLabelListSuccess}
+          closeDropdown={true}
+        />
       ),
     },
     {
@@ -95,7 +164,29 @@ const IssueBox = () => {
       component: (
         <FilterDropdown
           header={"Filter by who's assigned"}
-          subHeader={'Assigned to nobody'}
+          subHeader={''}
+          resetHeader={{
+            title: 'Assigned to nobody',
+            action: () => {
+              setSelectedAssignee('');
+              setFilterParam((prevValue) => ({
+                ...prevValue,
+                assignee: 'none',
+              }));
+            },
+          }}
+          inputPlaceholder={'Filter users'}
+          selectedValue={selectedAssignee}
+          handleSelect={(title) => {
+            setSelectedAssignee(title);
+            setFilterParam((prevValue) => ({
+              ...prevValue,
+              assignee: title,
+            }));
+          }}
+          sortList={assigneeList}
+          getListSuccess={getAssigneeListSuccess}
+          closeDropdown={true}
         />
       ),
     },
@@ -110,6 +201,7 @@ const IssueBox = () => {
       ),
     },
   ];
+
   return (
     <>
       <div className="px-4 sm:px-0 lg:hidden mb-4 ">
