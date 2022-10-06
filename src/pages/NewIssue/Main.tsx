@@ -18,9 +18,39 @@ import {
   MarkdownIcon,
   InfoIcon,
 } from '@primer/octicons-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/buttons/Button';
+import { useCreateIssueMutation } from '../../redux/labelsApi';
 
+type IssueForm = {
+  title: string;
+  body: string;
+  assignees: [];
+  labels: [];
+};
 const Main = () => {
+  const navigate = useNavigate();
+  const [issueForm, setIssueForm] = useState<IssueForm>({
+    title: '',
+    body: '',
+    assignees: [],
+    labels: [],
+  });
+  const [createIssue] = useCreateIssueMutation();
+
+  const handleSubmit = async (issueForm) => {
+    console.log('create issue');
+    setIssueForm({
+      title: '',
+      body: '',
+      assignees: [],
+      labels: [],
+    });
+    await createIssue(issueForm);
+    return navigate('/');
+  };
+
   return (
     <div className="grow flex md:mr-6">
       <div className="mr-4 hidden md:block">
@@ -37,6 +67,13 @@ const Main = () => {
               className="rounded-md border-border border border-solid bg-default px-3 py-1 w-full"
               type="text"
               placeholder="Title"
+              value={issueForm.title}
+              onChange={(e) =>
+                setIssueForm((prevValue) => ({
+                  ...prevValue,
+                  title: e.target.value,
+                }))
+              }
             />
           </div>
           <div className="mb-2 md:flex border-border lg:border-b border-solid justify-between flex-col lg:flex-row md:items-start lg:items-center">
@@ -84,6 +121,13 @@ const Main = () => {
             <textarea
               className="rounded-md md:rounded-b-none text-[14px] text-text border-border border border-solid bg-default p-2 w-full h-[200px] md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer"
               placeholder="Leave a comment"
+              onChange={(e) =>
+                setIssueForm((prevValue) => ({
+                  ...prevValue,
+                  body: e.target.value,
+                }))
+              }
+              value={issueForm.body}
             ></textarea>
             <div className="rounded-b-md text-[14px] border-border border-b border-x border-solid bg-default relative py-1.5 hidden md:block peer-focus:border-emphasis peer-focus:border-2 peer-focus:border-t-0">
               <input type="file" className="w-full opacity-[.01]" />
@@ -98,7 +142,12 @@ const Main = () => {
               <MarkdownIcon className="mr-2" />
               Styling with Markdown is supported
             </div>
-            <Button text={'Submit new issue'} primary={true} disabled={true} />
+            <Button
+              text={'Submit new issue'}
+              primary={true}
+              disabled={issueForm.title === ''}
+              onClick={() => handleSubmit(issueForm)}
+            />
           </div>
         </div>
         <div className="text-[12px] m-2 mb-6 leading-5">

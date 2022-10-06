@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Label } from '../models/label.model';
+import { Label, Issue } from '../models/label.model';
 
 const headers = {
   'Content-type': 'application/vnd.github+json',
@@ -64,6 +64,14 @@ export const labelsApi = createApi({
         headers,
       }),
     }),
+    createIssue: builder.mutation<void, Issue>({
+      query: (issue) => ({
+        url: '/issues',
+        method: 'POST',
+        body: JSON.stringify(issue),
+        headers,
+      }),
+    }),
   }),
 });
 
@@ -77,4 +85,5 @@ export const {
   // Isssue List Page
   useIssueListQuery,
   useAssigneeListQuery,
+  useCreateIssueMutation,
 } = labelsApi;
