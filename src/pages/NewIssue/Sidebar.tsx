@@ -3,35 +3,47 @@ import FilterDropdown from '../IssueList/FilterDropdown';
 import { useState } from 'react';
 import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
 import SidebarItem from './SidebarItem';
+import Assignee from './Assignee';
+import Label from '../LabelList/Label';
 
-type Label = {
-  name: string;
-  color: string;
-  description: string;
-};
-type Assignee = {
+type AssigneeType = {
   login: string;
   avatar_url: string;
+  url: string;
 };
-
+type SelectedAssigneesComponent = {
+  name: string;
+  component: JSX.Element;
+};
+type SelectedLabelsComponent = {
+  name: string;
+  component: JSX.Element;
+};
 const Sidebar = () => {
   const { data: labelListData, isSuccess: getLabelListSuccess } =
     useLabelListQuery();
   const { data: assigneeListData, isSuccess: getAssigneeListSuccess } =
     useAssigneeListQuery();
-  const [selectedLabels, setSelectedLabels] = useState<Label[]>([]);
-  const [selectedAssignees, setSelectedAssignees] = useState<{}[]>([]);
+
+  const [selectedAssigneesComponent, setSelectedAssigneesComponent] = useState<
+    SelectedAssigneesComponent[]
+  >([]);
+  const [selectedLabelsComponent, setSelectedLabelsComponent] = useState<
+    SelectedLabelsComponent[]
+  >([]);
 
   const labelList = labelListData?.map((label) => ({
     title: label.name,
     description: label.description,
+    color: label.color,
     prefixElement: `<div class="mt-1 rounded-[2em] w-[1em] h-[1em] mr-2" style="background-color: #${label.color};"/>`,
   }));
 
-  const assigneeList = assigneeListData?.map((assignee: Assignee) => ({
+  const assigneeList = assigneeListData?.map((assignee: AssigneeType) => ({
     title: assignee.login,
-    prefixElement: `<img src=${assignee.avatar_url} alt="avatar" class="w-[20px] h-[20px] rounded-full mr-2"
+    prefixElement: `<img src=${assignee.avatar_url} alt="avatar" class="w-[20px] h-[20px] rounded-full mr-2",
   />`,
+    url: assignee.avatar_url,
   }));
 
   const sidebarList = [
@@ -42,29 +54,65 @@ const Sidebar = () => {
         actionText: 'assign yourself',
         link: '',
         action: () => {
-          setSelectedAssignees([
+          setSelectedAssigneesComponent([
             {
-              title: 'chloe7303',
-              prefixElement: `<img src='https://avatars.githubusercontent.com/u/57607232?v=4' alt="avatar" class="w-[20px] h-[20px] rounded-full mr-2"
-          />`,
+              name: 'chloe7303',
+              component: (
+                <Assignee
+                  key={'chloe7303'}
+                  imgUrl={
+                    'https://avatars.githubusercontent.com/u/57607232?v=4'
+                  }
+                  name={'chloe7303'}
+                />
+              ),
             },
           ]);
         },
       },
-      selectedList: selectedAssignees,
+      selectedListComponent: selectedAssigneesComponent,
       dropdownComponent: (
         <FilterDropdown
           header={'Assign up to 10 people to this issue'}
           subHeader={'Suggestions'}
-          resetHeader={''}
+          resetHeader={{
+            title: 'Clear assignees',
+            action: () => {
+              setSelectedAssigneesComponent([]);
+            },
+          }}
           inputPlaceholder={'Type or choose a user'}
-          selectedValue={selectedAssignees}
+          selectedValue={selectedAssigneesComponent.map(
+            (assignee) => assignee.name
+          )}
           handleSelect={(assignee) => {
-            setSelectedAssignees((prevValue) => [...prevValue, assignee]);
+            if (
+              selectedAssigneesComponent.findIndex(
+                (item) => item.name === assignee.title
+              ) === -1
+            )
+              setSelectedAssigneesComponent((prevValue) => [
+                ...prevValue,
+                {
+                  name: assignee.title,
+                  component: (
+                    <Assignee
+                      key={assignee.title}
+                      imgUrl={assignee.url}
+                      name={assignee.title}
+                    />
+                  ),
+                },
+              ]);
+            else
+              setSelectedAssigneesComponent((prevValue) =>
+                prevValue.filter((item) => item.name !== assignee.title)
+              );
           }}
           sortList={assigneeList}
           getListSuccess={getAssigneeListSuccess}
           closeDropdown={false}
+          showEdit={false}
         />
       ),
     },
@@ -76,26 +124,43 @@ const Sidebar = () => {
         link: '',
         action: null,
       },
-      selectedList: selectedLabels,
+      selectedListComponent: selectedLabelsComponent,
       dropdownComponent: (
         <FilterDropdown
           header={'Apply labels to this issue'}
           subHeader={''}
           resetHeader={''}
           inputPlaceholder={'Filter labels'}
-          selectedValue={selectedLabels}
-          handleSelect={({ title }) => {
-            if (selectedLabels.includes(title)) {
-              setSelectedLabels((prevValue) =>
-                prevValue.filter((label) => label !== title)
+          selectedValue={selectedLabelsComponent.map((label) => label.name)}
+          handleSelect={(label) => {
+            if (
+              selectedLabelsComponent.findIndex(
+                (item) => item.name === label.title
+              ) === -1
+            )
+              setSelectedLabelsComponent((prevValue) => [
+                ...prevValue,
+                {
+                  name: label.title,
+                  component: (
+                    <Label
+                      key={label.title}
+                      bgColorCode={label.color}
+                      name={label.title}
+                      thin={true}
+                    />
+                  ),
+                },
+              ]);
+            else
+              setSelectedLabelsComponent((prevValue) =>
+                prevValue.filter((item) => item.name !== label.title)
               );
-            } else {
-              setSelectedLabels((prevValue) => [...prevValue, title]);
-            }
           }}
           sortList={labelList}
           getListSuccess={getLabelListSuccess}
           closeDropdown={false}
+          showEdit={true}
         />
       ),
     },
@@ -107,7 +172,7 @@ const Sidebar = () => {
         link: '',
         action: null,
       },
-      selectedList: [],
+      selectedListComponent: [],
       dropdownComponent: true,
     },
     {
@@ -118,7 +183,7 @@ const Sidebar = () => {
         link: null,
         action: null,
       },
-      selectedList: [],
+      selectedListComponent: [],
       dropdownComponent: true,
     },
     {
@@ -151,7 +216,7 @@ const Sidebar = () => {
           title={item.title}
           content={item.content}
           dropdownComponent={item.dropdownComponent}
-          selectedList={item.selectedList}
+          selectedListComponent={item.selectedListComponent}
         />
       ))}
 

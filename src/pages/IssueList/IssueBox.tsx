@@ -150,6 +150,7 @@ const IssueBox = () => {
           sortList={labelList}
           getListSuccess={getLabelListSuccess}
           closeDropdown={true}
+          showEdit={false}
         />
       ),
     },
@@ -187,6 +188,7 @@ const IssueBox = () => {
           sortList={assigneeList}
           getListSuccess={getAssigneeListSuccess}
           closeDropdown={true}
+          showEdit={false}
         />
       ),
     },

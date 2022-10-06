@@ -1,4 +1,4 @@
-import { XIcon, CheckIcon } from '@primer/octicons-react';
+import { XIcon, CheckIcon, PencilIcon } from '@primer/octicons-react';
 import { useState } from 'react';
 
 const FilterDropdown = ({
@@ -11,6 +11,7 @@ const FilterDropdown = ({
   sortList,
   getListSuccess,
   closeDropdown,
+  showEdit,
 }) => {
   const [searchInputText, setSearchInputText] = useState('');
 
@@ -35,7 +36,7 @@ const FilterDropdown = ({
             />
           )}
         </div>
-        <div className="overflow-y-auto max-h-[calc(100%-126px)] sm:max-h-[calc(485px-82px)]">
+        <div className="overflow-y-auto max-h-[calc(100%-126px)] sm:max-h-[calc(485px-120px)]">
           {resetHeader && (
             <div
               className="flex items-start p-4 overflow-hidden text-left cursor-pointer border-b border-solid border-b-border sm:pt-[7px] sm:pb-[7px] hover:bg-default"
@@ -96,6 +97,15 @@ const FilterDropdown = ({
                 );
               })}
         </div>
+        {showEdit && (
+          <a
+            href="/labels"
+            className="pl-10 p-2 bg-white inline-block text-text rounded-b-md border-t border-border border-solid w-full font-semibold"
+          >
+            <PencilIcon />
+            <span className="ml-2">Edit labels</span>
+          </a>
+        )}
       </div>
     </div>
   );
