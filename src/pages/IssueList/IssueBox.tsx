@@ -130,7 +130,7 @@ const IssueBox = () => {
           }}
           inputPlaceholder={'Filter labels'}
           selectedValue={selectedLabels}
-          handleSelect={(title) => {
+          handleSelect={({ title }) => {
             if (selectedLabels.includes(title)) {
               setSelectedLabels((prevValue) =>
                 prevValue.filter((label) => label !== title)
@@ -177,7 +177,7 @@ const IssueBox = () => {
           }}
           inputPlaceholder={'Filter users'}
           selectedValue={selectedAssignee}
-          handleSelect={(title) => {
+          handleSelect={({ title }) => {
             setSelectedAssignee(title);
             setFilterParam((prevValue) => ({
               ...prevValue,

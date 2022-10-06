@@ -57,6 +57,7 @@ const disabledStyle = css`
   :hover {
     background-color: #94d3a2;
   }
+  cursor: not-allowed;
 `;
 
 const Button = ({

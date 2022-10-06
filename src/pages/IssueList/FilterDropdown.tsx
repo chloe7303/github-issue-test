@@ -62,7 +62,7 @@ const FilterDropdown = ({
                   <div
                     key={index}
                     className={`flex items-start w-full p-4 overflow-hidden text-left cursor-pointer border-b border-solid hover:bg-default border-b-border sm:pt-[7px] sm:pb-[7px]`}
-                    onClick={() => handleSelect(item.title)}
+                    onClick={() => handleSelect(item)}
                   >
                     {item.title && (
                       <div
