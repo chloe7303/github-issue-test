@@ -11,6 +11,6 @@ export interface Label {
 export interface Issue {
   title: string;
   body: string;
-  assignees: [];
-  labels: [];
+  assignees: string[];
+  labels: string[];
 }
