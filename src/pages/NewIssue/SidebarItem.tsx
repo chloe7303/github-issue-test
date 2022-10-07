@@ -19,7 +19,6 @@ const SidebarItem = ({
         </summary>
         {dropdownComponent}
       </details>
-      {console.log(selectedListComponent)}
       {dropdownComponent && selectedListComponent?.length !== 0 ? (
         selectedListComponent?.map((item) => item.component)
       ) : (

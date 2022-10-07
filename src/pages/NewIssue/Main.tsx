@@ -18,7 +18,7 @@ import {
   MarkdownIcon,
   InfoIcon,
 } from '@primer/octicons-react';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/buttons/Button';
 import { useCreateIssueMutation } from '../../redux/labelsApi';
@@ -29,11 +29,11 @@ const Main = () => {
   const { issueForm, setIssueForm } = useContext(
     NewIssueContext
   ) as NewIssueContextType;
+  const [showPreview, setShowPreview] = useState(false);
 
   const [createIssue] = useCreateIssueMutation();
 
   const handleSubmit = async (issueForm) => {
-    console.log('create issue');
     setIssueForm({
       title: '',
       body: '',
@@ -71,10 +71,16 @@ const Main = () => {
           </div>
           <div className="mb-2 md:flex border-border lg:border-b border-solid justify-between flex-col lg:flex-row md:items-start lg:items-center">
             <div className="md:mt-2 md:mx-2 -mb-px flex">
-              <button className="py-3 px-4 md:rounded-t-[6px] border-border border border-solid md:mr-2 text-[14px] z-[1] border-b-[#fff] grow border-r-0 md:border-r">
+              <button
+                className="py-3 px-4 md:rounded-t-[6px] border-border border border-solid md:mr-2 text-[14px] z-[1] border-b-[#fff] grow border-r-0 md:border-r"
+                onClick={() => setShowPreview(false)}
+              >
                 Write
               </button>
-              <button className="py-3 px-4 md:rounded-t-[6px] border-border border border-solid border-b-0 text-[14px] grow">
+              <button
+                className="py-3 px-4 md:rounded-t-[6px] border-border border border-solid border-b-0 text-[14px] grow"
+                onClick={() => setShowPreview(true)}
+              >
                 Preview
               </button>
             </div>
@@ -110,26 +116,30 @@ const Main = () => {
               </div>
             </div>
           </div>
-          <div className="m-2">
-            <textarea
-              className="rounded-md md:rounded-b-none text-[14px] text-text border-border border border-solid bg-default p-2 w-full h-[200px] md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer"
-              placeholder="Leave a comment"
-              onChange={(e) =>
-                setIssueForm((prevValue) => ({
-                  ...prevValue,
-                  body: e.target.value,
-                }))
-              }
-              value={issueForm.body}
-            ></textarea>
-            <div className="rounded-b-md text-[14px] border-border border-b border-x border-solid bg-default relative py-1.5 hidden md:block peer-focus:border-emphasis peer-focus:border-2 peer-focus:border-t-0">
-              <input type="file" className="w-full opacity-[.01]" />
-              <div className="flex justify-between border-t border-dashed border-border absolute top-0 pt-2 px-3 w-full text-text pointer-events-none">
-                <span>Attach files by selecting or pasting them.</span>
-                <MarkdownIcon />
+          {showPreview ? (
+            <div>show pre</div>
+          ) : (
+            <div className="m-2">
+              <textarea
+                className="rounded-md md:rounded-b-none text-[14px] text-text border-border border border-solid bg-default p-2 w-full h-[200px] md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer"
+                placeholder="Leave a comment"
+                onChange={(e) =>
+                  setIssueForm((prevValue) => ({
+                    ...prevValue,
+                    body: e.target.value,
+                  }))
+                }
+                value={issueForm.body}
+              ></textarea>
+              <div className="rounded-b-md text-[14px] border-border border-b border-x border-solid bg-default relative py-1.5 hidden md:block peer-focus:border-emphasis peer-focus:border-2 peer-focus:border-t-0">
+                <input type="file" className="w-full opacity-[.01]" />
+                <div className="flex justify-between border-t border-dashed border-border absolute top-0 pt-2 px-3 w-full text-text pointer-events-none">
+                  <span>Attach files by selecting or pasting them.</span>
+                  <MarkdownIcon />
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="m-2 text-[12px] text-text justify-between items-center hidden md:flex">
             <div>
               <MarkdownIcon className="mr-2" />
