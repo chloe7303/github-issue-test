@@ -18,25 +18,18 @@ import {
   MarkdownIcon,
   InfoIcon,
 } from '@primer/octicons-react';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/buttons/Button';
 import { useCreateIssueMutation } from '../../redux/labelsApi';
+import { NewIssueContext, NewIssueContextType } from './NewIssue';
 
-type IssueForm = {
-  title: string;
-  body: string;
-  assignees: [];
-  labels: [];
-};
 const Main = () => {
   const navigate = useNavigate();
-  const [issueForm, setIssueForm] = useState<IssueForm>({
-    title: '',
-    body: '',
-    assignees: [],
-    labels: [],
-  });
+  const { issueForm, setIssueForm } = useContext(
+    NewIssueContext
+  ) as NewIssueContextType;
+
   const [createIssue] = useCreateIssueMutation();
 
   const handleSubmit = async (issueForm) => {

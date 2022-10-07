@@ -1,10 +1,11 @@
 import Button from '../../components/buttons/Button';
 import FilterDropdown from '../IssueList/FilterDropdown';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
 import SidebarItem from './SidebarItem';
 import Assignee from './Assignee';
 import Label from '../LabelList/Label';
+import { NewIssueContext, NewIssueContextType } from './NewIssue';
 
 type AssigneeType = {
   login: string;
@@ -20,6 +21,10 @@ type SelectedLabelsComponent = {
   component: JSX.Element;
 };
 const Sidebar = () => {
+  const { issueForm, setIssueForm } = useContext(
+    NewIssueContext
+  ) as NewIssueContextType;
+
   const { data: labelListData, isSuccess: getLabelListSuccess } =
     useLabelListQuery();
   const { data: assigneeListData, isSuccess: getAssigneeListSuccess } =
@@ -54,6 +59,10 @@ const Sidebar = () => {
         actionText: 'assign yourself',
         link: '',
         action: () => {
+          setIssueForm((prevValue) => ({
+            ...prevValue,
+            assignees: ['chloe7303'],
+          }));
           setSelectedAssigneesComponent([
             {
               name: 'chloe7303',
@@ -79,6 +88,7 @@ const Sidebar = () => {
             title: 'Clear assignees',
             action: () => {
               setSelectedAssigneesComponent([]);
+              setIssueForm((prevValue) => ({ ...prevValue, assignees: [] }));
             },
           }}
           inputPlaceholder={'Type or choose a user'}
@@ -86,11 +96,21 @@ const Sidebar = () => {
             (assignee) => assignee.name
           )}
           handleSelect={(assignee) => {
-            if (
-              selectedAssigneesComponent.findIndex(
-                (item) => item.name === assignee.title
-              ) === -1
-            )
+            if (issueForm.assignees.includes(assignee.title)) {
+              setIssueForm((prevValue) => ({
+                ...prevValue,
+                assignees: prevValue.assignees.filter(
+                  (item) => item !== assignee.title
+                ),
+              }));
+              setSelectedAssigneesComponent((prevValue) =>
+                prevValue.filter((item) => item.name !== assignee.title)
+              );
+            } else {
+              setIssueForm((prevValue) => ({
+                ...prevValue,
+                assignees: [...prevValue.assignees, assignee.title],
+              }));
               setSelectedAssigneesComponent((prevValue) => [
                 ...prevValue,
                 {
@@ -104,10 +124,7 @@ const Sidebar = () => {
                   ),
                 },
               ]);
-            else
-              setSelectedAssigneesComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== assignee.title)
-              );
+            }
           }}
           sortList={assigneeList}
           getListSuccess={getAssigneeListSuccess}
@@ -133,11 +150,19 @@ const Sidebar = () => {
           inputPlaceholder={'Filter labels'}
           selectedValue={selectedLabelsComponent.map((label) => label.name)}
           handleSelect={(label) => {
-            if (
-              selectedLabelsComponent.findIndex(
-                (item) => item.name === label.title
-              ) === -1
-            )
+            if (issueForm.labels.includes(label.title)) {
+              setIssueForm((prevValue) => ({
+                ...prevValue,
+                labels: prevValue.labels.filter((item) => item !== label.title),
+              }));
+              setSelectedLabelsComponent((prevValue) =>
+                prevValue.filter((item) => item.name !== label.title)
+              );
+            } else {
+              setIssueForm((prevValue) => ({
+                ...prevValue,
+                labels: [...prevValue.labels, label.title],
+              }));
               setSelectedLabelsComponent((prevValue) => [
                 ...prevValue,
                 {
@@ -152,10 +177,7 @@ const Sidebar = () => {
                   ),
                 },
               ]);
-            else
-              setSelectedLabelsComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== label.title)
-              );
+            }
           }}
           sortList={labelList}
           getListSuccess={getLabelListSuccess}
