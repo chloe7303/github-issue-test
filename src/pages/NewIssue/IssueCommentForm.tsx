@@ -170,7 +170,7 @@ const IssueCommentForm = ({ handleSubmit, title, body, setTitle, setBody }) => {
         ) : (
           <div className="m-2">
             <TextareaMarkdown
-              className={`rounded-md md:rounded-b-none text-[14px] placeholder:text-text border-border border border-solid bg-default p-2 w-full md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer leading-6"
+              className={`rounded-md md:rounded-b-none text-[14px] placeholder:text-text border-border border border-solid bg-default p-3 w-full md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer leading-6
               placeholder="Leave a comment ${
                 title === null ? 'h-[100px]' : 'h-[200px] '
               }`}
