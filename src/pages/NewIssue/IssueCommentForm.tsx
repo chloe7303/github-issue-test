@@ -30,18 +30,29 @@ const IssueCommentForm = ({ handleSubmit, title, body, setTitle, setBody }) => {
   const ref = useRef<TextareaMarkdownRef>(null);
 
   return (
-    <div className="grow relative md:before:caret after:caret md:after:ml-[2px] after:bg-white">
+    <div
+      className={`grow relative md:before:caret after:caret md:after:ml-[2px] ${
+        title === null ? 'after:bg-default' : 'after:bg-white'
+      }`}
+    >
       <div className="rounded-md border-border md:border border-solid grow before:[caret-icon] relative">
-        <div className="md:p-2 mb-4 md:mb-0">
-          <input
-            className="rounded-md border-border border border-solid bg-default px-3 py-1 w-full"
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="mb-2 md:flex border-border lg:border-b border-solid justify-between flex-col lg:flex-row md:items-start lg:items-center">
+        {title !== null && (
+          <div className="md:p-2 mb-4 md:mb-0">
+            <input
+              className="rounded-md border-border border border-solid bg-default px-3 py-1 w-full"
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+        )}
+
+        <div
+          className={`mb-2 md:flex border-border lg:border-b border-solid justify-between flex-col lg:flex-row md:items-start lg:items-center ${
+            title === null && 'bg-default rounded-t-md'
+          }`}
+        >
           <div className="md:mt-2 md:mx-2 -mb-px flex">
             <button
               className={`py-3 px-4 md:rounded-t-[6px] md:mr-2 text-[14px] z-[1] grow ${
@@ -159,8 +170,10 @@ const IssueCommentForm = ({ handleSubmit, title, body, setTitle, setBody }) => {
         ) : (
           <div className="m-2">
             <TextareaMarkdown
-              className="rounded-md md:rounded-b-none text-[14px] placeholder:text-text border-border border border-solid bg-default p-2 w-full h-[200px] md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer leading-6"
-              placeholder="Leave a comment"
+              className={`rounded-md md:rounded-b-none text-[14px] placeholder:text-text border-border border border-solid bg-default p-2 w-full md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer leading-6"
+              placeholder="Leave a comment ${
+                title === null ? 'h-[100px]' : 'h-[200px] '
+              }`}
               onChange={(e) => setBody(e.target.value)}
               value={body}
               ref={ref}
@@ -182,10 +195,12 @@ const IssueCommentForm = ({ handleSubmit, title, body, setTitle, setBody }) => {
           </div>
         )}
         <div className="m-2 text-[12px] text-text justify-between items-center hidden md:flex">
-          <div>
-            <MarkdownIcon className="mr-2" />
-            Styling with Markdown is supported
-          </div>
+          {title !== null && (
+            <div>
+              <MarkdownIcon className="mr-2" />
+              Styling with Markdown is supported
+            </div>
+          )}
           <Button
             text={'Submit new issue'}
             primary={true}
