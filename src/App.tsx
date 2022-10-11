@@ -8,6 +8,7 @@ import LabelManagement from './pages/LabelList/LabelList';
 import Header from './components/Header';
 import RepoHeader from './components/RepoHeader/RepoHeader';
 import Footer from './components/Footer';
+import RepoList from './pages/RepoList/RepoList';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -37,8 +38,9 @@ function App() {
         <Header />
         <RepoHeader />
         <Routes>
-          <Route path="/" element={<IssueList />}></Route>
+          <Route path="/" element={<RepoList />}></Route>
           <Route path="labels" element={<LabelManagement />}></Route>
+          <Route path="/issues" element={<IssueList />}></Route>
           <Route path="issues/:id" element={<Issue />}></Route>
           <Route path="issues/new" element={<NewIssue />}></Route>
         </Routes>

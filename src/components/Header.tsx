@@ -117,25 +117,32 @@ function Header() {
     };
   };
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState('');
 
   useEffect(() => {
     checkUser();
-    console.log(process.env.REACT_APP_PERSONAL_TOKEN, process.env.NODE_ENV);
+    // console.log(process.env.REACT_APP_PERSONAL_TOKEN, process.env.NODE_ENV);
   }, []);
 
   function checkUser() {
     const user = supabase.auth.user();
     console.log(user);
     setUser(user);
+    localStorage.setItem(
+      'user_name',
+      JSON.stringify(user?.user_metadata.user_name)
+    );
+    // const provider_token = JSON.parse(
+    //   localStorage.getItem('supabase.auth.token')!
+    // ).currentSession.provider_token;
+    // console.log(provider_token);
+    // localStorage.setItem('provider_token', JSON.stringify(provider_token));
     window.addEventListener('hashchange', () => {
       checkUser();
     });
   }
   async function signInWithGithub() {
     console.log('sign in');
-
-    const { user, session } = await supabase.auth.signIn(
+    const { user } = await supabase.auth.signIn(
       {
         provider: 'github',
       },
@@ -143,16 +150,15 @@ function Header() {
         scopes: 'repo gist notifications',
       }
     );
-
     setUser(user);
-    setToken(session?.provider_token!);
   }
 
   async function signOut() {
     console.log('sign out');
     await supabase.auth.signOut();
     setUser(null);
-    setToken('');
+    localStorage.removeItem('user_name');
+    localStorage.removeItem('provider_token');
   }
 
   return (

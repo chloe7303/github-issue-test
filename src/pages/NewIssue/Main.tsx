@@ -19,7 +19,7 @@ const Main = () => {
       labels: [],
     });
     await createIssue(issueForm);
-    return navigate('/');
+    return navigate('/issues');
   };
 
   const setTitle = (value) => {
