@@ -4,9 +4,11 @@ import {
   IssueClosedIcon,
   SkipIcon,
 } from '@primer/octicons-react';
+import { useNavigate } from 'react-router-dom';
 import Label from '../LabelList/Label';
 
 const IssueItem = ({ issue }) => {
+  const navigate = useNavigate();
   const computedIssueCreatedTime = (createdTime) => {
     const milliseconds = +new Date() - +new Date(createdTime);
     const days = Math.floor(milliseconds / (24 * 3600 * 1000));
@@ -34,7 +36,12 @@ const IssueItem = ({ issue }) => {
         <SkipIcon className="fill-muted" />
       )}
       <div className="px-2 grow">
-        <span className="font-semibold mr-1">{issue.title}</span>
+        <span
+          className="font-semibold mr-1 cursor-pointer hover:text-emphasis"
+          onClick={() => navigate(`/issues/${issue.number}`)}
+        >
+          {issue.title}
+        </span>
 
         <span className="block lg:inline my-1">
           {issue.labels?.map((label, index) => {

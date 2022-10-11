@@ -2,8 +2,8 @@ import Button from '../../components/buttons/Button';
 import FilterDropdown from '../IssueList/FilterDropdown';
 import { useState, useContext } from 'react';
 import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
-import SidebarItem from './SidebarItem';
-import Assignee from './Assignee';
+import SidebarItem from '../NewIssue/SidebarItem';
+import Assignee from '../NewIssue/Assignee';
 import Label from '../LabelList/Label';
 import { NewIssueContext, NewIssueContextType } from './Issue';
 
