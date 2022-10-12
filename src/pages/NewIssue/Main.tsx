@@ -46,11 +46,14 @@ const Main = () => {
         />
       </div>
       <IssueCommentForm
+        type={'new-issue'}
         handleSubmit={handleSubmit}
-        title={issueForm.title}
-        body={issueForm.body}
-        setTitle={setTitle}
-        setBody={setBody}
+        formContent={{
+          title: issueForm.title,
+          setTitle,
+          body: issueForm.body,
+          setBody,
+        }}
       />
     </div>
   );

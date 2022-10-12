@@ -4,6 +4,7 @@ import { Label, Issue } from '../models/label.model';
 const headers = {
   'Content-type': 'application/vnd.github+json',
   Authorization: `Bearer ${process.env.REACT_APP_PERSONAL_TOKEN}`,
+  'if-none-match': '',
 };
 
 // Define a service using a base URL and expected endpoints

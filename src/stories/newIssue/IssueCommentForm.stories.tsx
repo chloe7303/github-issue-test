@@ -22,8 +22,6 @@ export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
   handleSubmit: () => {},
-  title: '',
-  body: '',
-  setTitle: () => {},
-  setBody: () => {},
+  formContent: { title: '', setTitle: () => {}, body: '', setBody: () => {} },
+  type: 'new-issue',
 };
