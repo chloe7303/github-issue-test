@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateIssueMutation } from '../../redux/labelsApi';
 import { NewIssueContext, NewIssueContextType } from './Issue';
 import IssueCommentForm from '../../pages/NewIssue/IssueCommentForm';
+import Comment from './Comment';
 
 const Main = () => {
   const { issueForm, setIssueForm } = useContext(
@@ -37,21 +38,36 @@ const Main = () => {
   };
 
   return (
-    <div className="grow flex md:mr-6">
-      <div className="mr-4 hidden md:block">
-        <img
-          className="w-10 h-10 rounded-full inline"
-          src="https://avatars.githubusercontent.com/u/57607232?s=80&v=4"
-          alt="avatar"
+    <div className="grow md:mr-6">
+      <div className="flex">
+        <div className="mr-4 hidden md:block">
+          <img
+            className="w-10 h-10 rounded-full inline"
+            src="https://avatars.githubusercontent.com/u/57607232?s=80&v=4"
+            alt="avatar"
+          />
+        </div>
+        <Comment owner={true} />
+      </div>
+      <div className="flex">
+        <div className="mr-4 hidden md:block">
+          <img
+            className="w-10 h-10 rounded-full inline"
+            src="https://avatars.githubusercontent.com/u/57607232?s=80&v=4"
+            alt="avatar"
+          />
+        </div>
+        <IssueCommentForm
+          handleSubmit={handleSubmit}
+          formContent={{
+            title: null,
+            setTitle: null,
+            body: '',
+            setBody: issueForm.body,
+          }}
+          type={'new-comment'}
         />
       </div>
-      <IssueCommentForm
-        handleSubmit={handleSubmit}
-        title={null}
-        body={issueForm.body}
-        setTitle={null}
-        setBody={setBody}
-      />
     </div>
   );
 };

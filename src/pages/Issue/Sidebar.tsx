@@ -1,4 +1,3 @@
-import Button from '../../components/buttons/Button';
 import FilterDropdown from '../IssueList/FilterDropdown';
 import { useState, useContext } from 'react';
 import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
@@ -6,6 +5,12 @@ import SidebarItem from '../NewIssue/SidebarItem';
 import Assignee from '../NewIssue/Assignee';
 import Label from '../LabelList/Label';
 import { NewIssueContext, NewIssueContextType } from './Issue';
+import {
+  ArrowRightIcon,
+  LockIcon,
+  TrashIcon,
+  PinIcon,
+} from '@primer/octicons-react';
 
 type AssigneeType = {
   login: string;
@@ -20,6 +25,25 @@ type SelectedLabelsComponent = {
   name: string;
   component: JSX.Element;
 };
+
+const sidebarToolList = [
+  {
+    title: 'Lock conversation',
+    icon: <LockIcon className="mr-1" />,
+  },
+  {
+    title: 'Pin issue',
+    icon: <PinIcon className="mr-1" />,
+  },
+  {
+    title: 'Transfer issue',
+    icon: <ArrowRightIcon className="mr-1" />,
+  },
+  {
+    title: 'Delete isuse',
+    icon: <TrashIcon className="mr-1" />,
+  },
+];
 const Sidebar = () => {
   const { issueForm, setIssueForm } = useContext(
     NewIssueContext
@@ -216,7 +240,8 @@ const Sidebar = () => {
         link: '',
         action: null,
       },
-      dropdownComponent: false,
+      selectedListComponent: [],
+      dropdownComponent: true,
     },
   ];
 
@@ -232,13 +257,13 @@ const Sidebar = () => {
         />
       ))}
 
-      <div className="md:hidden">
-        <Button
-          text={'Submit new issue'}
-          primary={true}
-          disabled={true}
-          stretching={true}
-        />
+      <div className="py-4 text-[12px] font-semibold">
+        {sidebarToolList.map((item, index) => (
+          <div key={index} className="mb-4">
+            {item.icon}
+            {item.title}
+          </div>
+        ))}
       </div>
     </div>
   );
