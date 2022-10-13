@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateIssueMutation } from '../../redux/labelsApi';
 import { NewIssueContext, NewIssueContextType } from './NewIssue';
 import IssueCommentForm from './IssueCommentForm';
+import Button from '../../components/buttons/Button';
 
 const Main = () => {
   const { issueForm, setIssueForm } = useContext(
@@ -40,7 +41,6 @@ const Main = () => {
     <div className="grow flex md:mr-6">
       <IssueCommentForm
         type={'new-issue'}
-        handleSubmit={handleSubmit}
         formContent={{
           title: issueForm.title,
           setTitle,
@@ -48,6 +48,14 @@ const Main = () => {
           setBody,
         }}
         avatarUrl={'https://avatars.githubusercontent.com/u/57607232?s=80&v=4'}
+        buttons={[
+          <Button
+            text={'Submit new issue'}
+            primary={true}
+            disabled={issueForm.title === ''}
+            onClick={handleSubmit}
+          />,
+        ]}
       />
     </div>
   );

@@ -25,12 +25,17 @@ import TextareaMarkdown, {
 } from 'textarea-markdown-editor';
 import { useState, useRef } from 'react';
 
-const IssueCommentForm = ({ type, handleSubmit, formContent, avatarUrl }) => {
+const IssueCommentForm = ({ type, formContent, avatarUrl, buttons }) => {
   const [showPreview, setShowPreview] = useState(false);
   const ref = useRef<TextareaMarkdownRef>(null);
 
   return (
-    <div className="flex grow">
+    <div
+      className={`flex grow ${
+        type === 'new-comment' &&
+        'pt-4 border-border border-t-[2px] border-solid'
+      }`}
+    >
       <div className="mr-4 hidden md:block">
         <img
           className="w-10 h-10 rounded-full inline"
@@ -39,14 +44,19 @@ const IssueCommentForm = ({ type, handleSubmit, formContent, avatarUrl }) => {
         />
       </div>
       <div
-        className={`grow relative md:before:caret after:caret md:after:ml-[2px] ${
-          type === 'new-issue' && 'after:bg-white'
-        } ${
-          (type === 'new-comment' || type === 'update-comment') &&
-          'after:bg-default'
-        } ${type === 'update-comment-owner' && 'after:bg-[#ddf4ff]'}`}
+        className={`grow relative ${
+          (type === 'update-comment' || type === 'update-comment-owner') &&
+          'pb-8 before:timeline'
+        }`}
       >
-        <div className="rounded-md border-border md:border border-solid grow before:[caret-icon] relative">
+        <div
+          className={`rounded-md border-border md:border border-solid grow md:before:caret after:caret md:after:ml-[2px] relative bg-light ${
+            type === 'new-issue' && 'after:bg-white'
+          } ${
+            (type === 'new-comment' || type === 'update-comment') &&
+            'after:bg-default'
+          } ${type === 'update-comment-owner' && 'after:bg-[#ddf4ff]'}`}
+        >
           {type === 'new-issue' && (
             <div className="md:p-2 mb-4 md:mb-0">
               <input
@@ -183,7 +193,7 @@ const IssueCommentForm = ({ type, handleSubmit, formContent, avatarUrl }) => {
           {showPreview ? (
             <div
               className={`m-2 p-2 max-w-none border-b-2 border-border border-solid prose ${
-                type === 'new-issue' ? 'h-[230px]' : 'h-[130px]'
+                type === 'new-issue' ? 'min-h-[230px]' : 'min-h-[130px]'
               }`}
             >
               <ReactMarkdown
@@ -191,11 +201,11 @@ const IssueCommentForm = ({ type, handleSubmit, formContent, avatarUrl }) => {
               ></ReactMarkdown>
             </div>
           ) : (
-            <div className="m-2">
+            <div className="m-2 bg-light">
               <TextareaMarkdown
                 className={`rounded-md md:rounded-b-none text-[14px] placeholder:text-text border-border border border-solid bg-default p-3 w-full md:border-b-0 align-top focus:bg-light focus-visible:outline-none focus-visible:border-emphasis focus-visible:border-2 focus-visible:border-b-0 peer leading-6
               placeholder="Leave a comment ${
-                type === 'new-issue' ? 'h-[200px]' : 'h-[100px] '
+                type === 'new-issue' ? 'min-h-[200px]' : 'min-h-[100px] '
               }`}
                 onChange={(e) => formContent.setBody(e.target.value)}
                 value={formContent.body}
@@ -217,49 +227,17 @@ const IssueCommentForm = ({ type, handleSubmit, formContent, avatarUrl }) => {
               </div>
             </div>
           )}
-          {type === 'new-issue' && (
+          {buttons.length === 1 ? (
             <div className="m-2 text-[12px] text-text justify-between items-center hidden md:flex">
               <div>
                 <MarkdownIcon className="mr-2" />
                 Styling with Markdown is supported
               </div>
-              <Button
-                text={'Submit new issue'}
-                primary={true}
-                disabled={formContent.title === ''}
-                onClick={() => handleSubmit()}
-              />
+              {buttons[0]}
             </div>
-          )}
-          {type === 'new-comment' && (
+          ) : (
             <div className="m-2 justify-end flex">
-              <Button
-                text={'Close issue'}
-                onClick={() => handleSubmit()}
-                margin={'0 5px 0 0'}
-              />
-              <Button
-                text={'Comment'}
-                primary={true}
-                disabled={formContent.body === ''}
-                onClick={() => handleSubmit()}
-              />
-            </div>
-          )}
-          {(type === 'update-comment-owner' || type === 'update-comment') && (
-            <div className="m-2 justify-end flex">
-              <Button
-                text={'Cancel'}
-                onClick={() => handleSubmit()}
-                margin={'0 5px 0 0'}
-                danger={true}
-              />
-              <Button
-                text={'Update comment'}
-                primary={true}
-                disabled={formContent.body === ''}
-                onClick={() => handleSubmit()}
-              />
+              {buttons.map((button) => button)}
             </div>
           )}
         </div>

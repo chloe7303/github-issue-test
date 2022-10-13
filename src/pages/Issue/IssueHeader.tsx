@@ -1,6 +1,6 @@
 import { IssueOpenedIcon } from '@primer/octicons-react';
 import Button from '../../components/buttons/Button';
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import computedIssueCreatedTime from '../../utils/computedIssueCreatedTime';
 import { useUpdateIssueMutation } from '../../redux/labelsApi';
@@ -29,9 +29,34 @@ const IssueHeader = ({
     setIsEditing(false);
   };
 
+  const fixedIssueHeader = useCallback((node: HTMLDivElement) => {
+    if (node) {
+      const options = {
+        rootMargin: '0px',
+        threshold: 0,
+      };
+      const callback = (entries: IntersectionObserverEntry[]) => {
+        if (entries[0].isIntersecting) {
+          // setFixedHeaderStatus(false)
+          console.log('in');
+        } else {
+          // setFixedHeaderStatus(true)
+          console.log('out');
+        }
+      };
+      observer.current = new IntersectionObserver(callback, options);
+      observer.current.observe(node);
+    }
+  }, []);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
   return (
     <>
-      <div className="pb-4 mb-8 border-b border-border border-solid">
+      <div
+        className="pb-4 mb-8 border-b border-border border-solid"
+        // ref={fixedIssueHeader}
+      >
         {isEditing ? (
           <div className="flex justify-between mb-3 flex-col-reverse md:flex-row">
             <input

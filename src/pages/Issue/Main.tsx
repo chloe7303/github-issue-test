@@ -1,5 +1,6 @@
 import IssueCommentForm from '../../pages/NewIssue/IssueCommentForm';
 import Comment from './Comment';
+import Button from '../../components/buttons/Button';
 
 const Main = ({
   issueData: {
@@ -27,7 +28,6 @@ const Main = ({
       {/* other comments */}
       {/* create issue comment form */}
       <IssueCommentForm
-        handleSubmit={() => {}}
         formContent={{
           title: null,
           setTitle: null,
@@ -36,6 +36,21 @@ const Main = ({
         }}
         type={'new-comment'}
         avatarUrl={creatorAvatarUrl}
+        buttons={[
+          <Button
+            key={0}
+            text={'Close issue'}
+            onClick={() => {}}
+            margin={'0 5px 0 0'}
+          />,
+          <Button
+            key={1}
+            text={'Comment'}
+            primary={true}
+            // disabled={}
+            onClick={() => {}}
+          />,
+        ]}
       />
     </div>
   );
