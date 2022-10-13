@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Label, Issue } from '../models/label.model';
-import { IssueType } from '../models/issue.model';
+import { IssueType, Timeline } from '../models/issue.model';
 
 const headers = {
   'Content-type': 'application/vnd.github+json',
@@ -14,7 +14,7 @@ export const labelsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com/repos/chloe7303/github-issues-section',
   }),
-  tagTypes: ['Label'],
+  tagTypes: ['Label', 'Comment'],
   endpoints: (builder) => ({
     labelList: builder.query<Label[], void>({
       query: () => ({
@@ -89,6 +89,30 @@ export const labelsApi = createApi({
         headers,
       }),
     }),
+    timeline: builder.query<Timeline[], string>({
+      query: (issueNumber) => ({
+        url: `/issues/${issueNumber}/timeline`,
+        headers,
+      }),
+      providesTags: ['Comment'],
+    }),
+    updateComment: builder.mutation<void, any>({
+      query: ({ commentId, body }) => ({
+        url: `/issues/comments/${commentId}`,
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers,
+      }),
+    }),
+    createComment: builder.mutation<void, any>({
+      query: ({ issueNumber, body }) => ({
+        url: `/issues/${issueNumber}/comments`,
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers,
+      }),
+      invalidatesTags: ['Comment'],
+    }),
   }),
 });
 
@@ -106,4 +130,7 @@ export const {
   // Issue Page
   useIssueQuery,
   useUpdateIssueMutation,
+  useTimelineQuery,
+  useUpdateCommentMutation,
+  useCreateCommentMutation,
 } = labelsApi;

@@ -5,7 +5,10 @@ import Reaction from './Reaction';
 import { useState } from 'react';
 import IssueCommentForm from '../NewIssue/IssueCommentForm';
 import Button from '../../components/buttons/Button';
-import { useUpdateIssueMutation } from '../../redux/labelsApi';
+import {
+  useUpdateIssueMutation,
+  useUpdateCommentMutation,
+} from '../../redux/labelsApi';
 import { useParams } from 'react-router-dom';
 
 const reactionList = [
@@ -27,12 +30,14 @@ const Comment = ({
     reactions,
     authorAssociation,
     avatarUrl,
+    commentId,
   },
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [commentBody, setCommentBody] = useState(body);
   const [commentBodyInput, setCommentBodyInput] = useState(body);
   const [updateIssue] = useUpdateIssueMutation();
+  const [updateComment] = useUpdateCommentMutation();
   const { id } = useParams() as { id: string };
 
   return (
@@ -66,10 +71,19 @@ const Comment = ({
               primary={true}
               disabled={commentBodyInput === ''}
               onClick={async () => {
-                await updateIssue({
-                  number: id,
-                  body: { body: commentBodyInput },
-                });
+                if (commentId) {
+                  await updateComment({
+                    commentId,
+                    body: {
+                      body: commentBodyInput,
+                    },
+                  });
+                } else {
+                  await updateIssue({
+                    number: id,
+                    body: { body: commentBodyInput },
+                  });
+                }
                 setCommentBody(commentBodyInput);
                 setIsEditing(false);
               }}
@@ -105,9 +119,9 @@ const Comment = ({
                   </span>
                 </div>
                 <div className="flex text-text">
-                  {authorAssociation === 'OWNER' && (
+                  {authorAssociation !== 'NONE' && (
                     <span className="text-[12px] mr-3 border-border border-solid border rounded-xl px-2 py-0.5 font-semibold">
-                      Owner
+                      {authorAssociation.toLowerCase()}
                     </span>
                   )}
                   <details className="mr-3 cursor-pointer">
@@ -133,21 +147,27 @@ const Comment = ({
                   </details>
                 </div>
               </div>
-              <div className="p-4 bg-light rounded-b-md">{commentBody}</div>
+              {/* <div className="p-4 bg-light rounded-b-md">{commentBody}</div> */}
               <div className="p-4 bg-light rounded-b-md prose max-w-none">
                 <ReactMarkdown
                   children={commentBody || 'Nothing to preview'}
                 ></ReactMarkdown>
               </div>
-              <div className="p-4 pt-0 bg-light rounded-b-md">
-                <button className="bg-default p-1 border border-border border-solid rounded-full text-text mr-1">
-                  <SmileyIcon className="!align-bottom" />
-                </button>
-                {/* <div>{reactions['eyes']}</div> */}
-                {reactionList.map((icon, index) => (
-                  <Reaction key={index} icon={icon} number={reactions[icon]} />
-                ))}
-              </div>
+              {reactions.total_count !== 0 && (
+                <div className="p-4 pt-0 bg-light rounded-b-md">
+                  <button className="bg-default p-1 border border-border border-solid rounded-full text-text mr-1">
+                    <SmileyIcon className="!align-bottom" />
+                  </button>
+                  {/* <div>{reactions['eyes']}</div> */}
+                  {reactionList.map((icon, index) => (
+                    <Reaction
+                      key={index}
+                      icon={icon}
+                      number={reactions[icon]}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
