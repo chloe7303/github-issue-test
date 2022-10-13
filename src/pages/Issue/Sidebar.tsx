@@ -1,10 +1,9 @@
 import FilterDropdown from '../IssueList/FilterDropdown';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
 import SidebarItem from '../NewIssue/SidebarItem';
 import Assignee from '../NewIssue/Assignee';
 import Label from '../LabelList/Label';
-import { NewIssueContext, NewIssueContextType } from './Issue';
 import {
   ArrowRightIcon,
   LockIcon,
@@ -45,10 +44,6 @@ const sidebarToolList = [
   },
 ];
 const Sidebar = () => {
-  const { issueForm, setIssueForm } = useContext(
-    NewIssueContext
-  ) as NewIssueContextType;
-
   const { data: labelListData, isSuccess: getLabelListSuccess } =
     useLabelListQuery();
   const { data: assigneeListData, isSuccess: getAssigneeListSuccess } =
@@ -82,26 +77,7 @@ const Sidebar = () => {
         text: 'No one-',
         actionText: 'assign yourself',
         link: '',
-        action: () => {
-          setIssueForm((prevValue) => ({
-            ...prevValue,
-            assignees: ['chloe7303'],
-          }));
-          setSelectedAssigneesComponent([
-            {
-              name: 'chloe7303',
-              component: (
-                <Assignee
-                  key={'chloe7303'}
-                  imgUrl={
-                    'https://avatars.githubusercontent.com/u/57607232?v=4'
-                  }
-                  name={'chloe7303'}
-                />
-              ),
-            },
-          ]);
-        },
+        action: () => {},
       },
       selectedListComponent: selectedAssigneesComponent,
       dropdownComponent: (
@@ -112,44 +88,13 @@ const Sidebar = () => {
             title: 'Clear assignees',
             action: () => {
               setSelectedAssigneesComponent([]);
-              setIssueForm((prevValue) => ({ ...prevValue, assignees: [] }));
             },
           }}
           inputPlaceholder={'Type or choose a user'}
           selectedValue={selectedAssigneesComponent.map(
             (assignee) => assignee.name
           )}
-          handleSelect={(assignee) => {
-            if (issueForm.assignees.includes(assignee.title)) {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                assignees: prevValue.assignees.filter(
-                  (item) => item !== assignee.title
-                ),
-              }));
-              setSelectedAssigneesComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== assignee.title)
-              );
-            } else {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                assignees: [...prevValue.assignees, assignee.title],
-              }));
-              setSelectedAssigneesComponent((prevValue) => [
-                ...prevValue,
-                {
-                  name: assignee.title,
-                  component: (
-                    <Assignee
-                      key={assignee.title}
-                      imgUrl={assignee.url}
-                      name={assignee.title}
-                    />
-                  ),
-                },
-              ]);
-            }
-          }}
+          handleSelect={() => {}}
           sortList={assigneeList}
           getListSuccess={getAssigneeListSuccess}
           closeDropdown={false}
@@ -173,36 +118,7 @@ const Sidebar = () => {
           resetHeader={''}
           inputPlaceholder={'Filter labels'}
           selectedValue={selectedLabelsComponent.map((label) => label.name)}
-          handleSelect={(label) => {
-            if (issueForm.labels.includes(label.title)) {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                labels: prevValue.labels.filter((item) => item !== label.title),
-              }));
-              setSelectedLabelsComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== label.title)
-              );
-            } else {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                labels: [...prevValue.labels, label.title],
-              }));
-              setSelectedLabelsComponent((prevValue) => [
-                ...prevValue,
-                {
-                  name: label.title,
-                  component: (
-                    <Label
-                      key={label.title}
-                      bgColorCode={label.color}
-                      name={label.title}
-                      thin={true}
-                    />
-                  ),
-                },
-              ]);
-            }
-          }}
+          handleSelect={() => {}}
           sortList={labelList}
           getListSuccess={getLabelListSuccess}
           closeDropdown={false}
@@ -246,7 +162,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="md:w-[240px] lg:w-[256px]">
+    <div className="md:w-[256px] lg:w-[296px]">
       {sidebarList.map((item, index) => (
         <SidebarItem
           key={index}

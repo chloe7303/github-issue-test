@@ -2,8 +2,8 @@ import { KebabHorizontalIcon, SmileyIcon } from '@primer/octicons-react';
 
 const Comment = ({ owner }) => {
   return (
-    <div className="grow relative py-4 before:timeline">
-      <div className="rounded-md border-border border border-solid grow md:before:caret md:after:caret md:after:bg-default md:after:ml-[2px] after:top-[11px] before:top-[11px] after:left-[-8px] before:left-[-8px] relative">
+    <div className="grow relative pb-8 before:timeline">
+      <div className="rounded-md border-border border border-solid grow md:before:caret md:after:caret md:after:bg-default md:after:ml-[2px] relative">
         <div className="flex border-border border-b border-solid justify-between lg:flex-row md:items-start lg:items-center bg-default rounded-t-md py-2 px-4">
           <div className="text-[14px]">
             <span className="font-semibold">elaine011 </span>

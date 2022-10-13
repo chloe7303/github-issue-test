@@ -1,42 +1,7 @@
-import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useCreateIssueMutation } from '../../redux/labelsApi';
-import { NewIssueContext, NewIssueContextType } from './Issue';
 import IssueCommentForm from '../../pages/NewIssue/IssueCommentForm';
 import Comment from './Comment';
 
 const Main = () => {
-  const { issueForm, setIssueForm } = useContext(
-    NewIssueContext
-  ) as NewIssueContextType;
-  const navigate = useNavigate();
-  const [createIssue] = useCreateIssueMutation();
-
-  const handleSubmit = async () => {
-    setIssueForm({
-      title: '',
-      body: '',
-      assignees: [],
-      labels: [],
-    });
-    await createIssue(issueForm);
-    return navigate('/issues');
-  };
-
-  const setTitle = (value) => {
-    setIssueForm((prevValue) => ({
-      ...prevValue,
-      title: value,
-    }));
-  };
-
-  const setBody = (value) => {
-    setIssueForm((prevValue) => ({
-      ...prevValue,
-      body: value,
-    }));
-  };
-
   return (
     <div className="grow md:mr-6">
       <div className="flex">
@@ -58,12 +23,12 @@ const Main = () => {
           />
         </div>
         <IssueCommentForm
-          handleSubmit={handleSubmit}
+          handleSubmit={() => {}}
           formContent={{
             title: null,
             setTitle: null,
             body: '',
-            setBody: issueForm.body,
+            setBody: () => {},
           }}
           type={'new-comment'}
         />

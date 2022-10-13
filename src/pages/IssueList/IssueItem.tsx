@@ -6,25 +6,11 @@ import {
 } from '@primer/octicons-react';
 import { useNavigate } from 'react-router-dom';
 import Label from '../LabelList/Label';
+import computedIssueCreatedTime from '../../utils/computedIssueCreatedTime';
 
 const IssueItem = ({ issue }) => {
   const navigate = useNavigate();
-  const computedIssueCreatedTime = (createdTime) => {
-    const milliseconds = +new Date() - +new Date(createdTime);
-    const days = Math.floor(milliseconds / (24 * 3600 * 1000));
-    const hours = Math.floor(milliseconds / (3600 * 1000));
-    const minutes = Math.floor(milliseconds / (60 * 1000));
-    const seconds = Math.round(milliseconds / 1000);
-    if (days > 0) {
-      return `${days} days ago`;
-    } else if (hours > 0) {
-      return `${hours} hours ago`;
-    } else if (minutes > 0) {
-      return `${minutes} minutes ago`;
-    } else if (seconds > 0) {
-      return `${seconds} seconds ago`;
-    }
-  };
+
   if (issue.pull_request) return <></>;
   return (
     <div className="px-4 py-3 flex border-t border-border border-solid hover:bg-default">

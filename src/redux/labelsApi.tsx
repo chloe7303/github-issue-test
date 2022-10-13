@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Label, Issue } from '../models/label.model';
+import { IssueType } from '../models/issue.model';
 
 const headers = {
   'Content-type': 'application/vnd.github+json',
   Authorization: `Bearer ${process.env.REACT_APP_PERSONAL_TOKEN}`,
-  'if-none-match': '',
+  // 'if-none-match': '',
 };
 
 // Define a service using a base URL and expected endpoints
@@ -73,6 +74,21 @@ export const labelsApi = createApi({
         headers,
       }),
     }),
+    // Issue Page
+    issue: builder.query<IssueType, string>({
+      query: (issueNumber) => ({
+        url: `/issues/${issueNumber}`,
+        headers,
+      }),
+    }),
+    updateIssue: builder.mutation<IssueType, any>({
+      query: ({ number, body }) => ({
+        url: `/issues/${number}`,
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers,
+      }),
+    }),
   }),
 });
 
@@ -87,4 +103,7 @@ export const {
   useIssueListQuery,
   useAssigneeListQuery,
   useCreateIssueMutation,
+  // Issue Page
+  useIssueQuery,
+  useUpdateIssueMutation,
 } = labelsApi;
