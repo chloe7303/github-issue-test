@@ -38,13 +38,6 @@ const Main = () => {
 
   return (
     <div className="grow flex md:mr-6">
-      <div className="mr-4 hidden md:block">
-        <img
-          className="w-10 h-10 rounded-full inline"
-          src="https://avatars.githubusercontent.com/u/57607232?s=80&v=4"
-          alt="avatar"
-        />
-      </div>
       <IssueCommentForm
         type={'new-issue'}
         handleSubmit={handleSubmit}
@@ -54,6 +47,7 @@ const Main = () => {
           body: issueForm.body,
           setBody,
         }}
+        avatarUrl={'https://avatars.githubusercontent.com/u/57607232?s=80&v=4'}
       />
     </div>
   );
