@@ -8,6 +8,7 @@ import Button from '../../components/buttons/Button';
 import {
   useUpdateIssueMutation,
   useUpdateCommentMutation,
+  useDeleteCommentMutation,
 } from '../../redux/labelsApi';
 import { useParams } from 'react-router-dom';
 
@@ -38,8 +39,15 @@ const Comment = ({
   const [commentBodyInput, setCommentBodyInput] = useState(body);
   const [updateIssue] = useUpdateIssueMutation();
   const [updateComment] = useUpdateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
   const { id } = useParams() as { id: string };
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleDeleteComment = async (commentId) => {
+    if (!window.confirm('Are you sure you want to delete this?')) return;
+    await deleteComment(commentId);
+    console.log('detele');
+  };
   return (
     <>
       {isEditing ? (
@@ -69,8 +77,9 @@ const Comment = ({
               key={1}
               text={'Update comment'}
               primary={true}
-              disabled={commentBodyInput === ''}
+              disabled={commentBodyInput === '' || isLoading}
               onClick={async () => {
+                setIsLoading(true);
                 if (commentId) {
                   await updateComment({
                     commentId,
@@ -78,11 +87,13 @@ const Comment = ({
                       body: commentBodyInput,
                     },
                   });
+                  setIsLoading(false);
                 } else {
                   await updateIssue({
                     number: id,
                     body: { body: commentBodyInput },
                   });
+                  setIsLoading(false);
                 }
                 setCommentBody(commentBodyInput);
                 setIsEditing(false);
@@ -140,7 +151,10 @@ const Comment = ({
                       >
                         Edit
                       </button>
-                      <button className="py-2 pl-5 pr-10 hover:bg-[#cf222e] hover:text-light">
+                      <button
+                        className="py-2 pl-5 pr-10 hover:bg-[#cf222e] hover:text-light"
+                        onClick={() => handleDeleteComment(commentId)}
+                      >
                         Delete
                       </button>
                     </div>

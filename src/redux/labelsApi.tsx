@@ -5,7 +5,7 @@ import { IssueType, Timeline } from '../models/issue.model';
 const headers = {
   'Content-type': 'application/vnd.github+json',
   Authorization: `Bearer ${process.env.REACT_APP_PERSONAL_TOKEN}`,
-  // 'if-none-match': '',
+  'if-none-match': '',
 };
 
 // Define a service using a base URL and expected endpoints
@@ -113,6 +113,14 @@ export const labelsApi = createApi({
       }),
       invalidatesTags: ['Comment'],
     }),
+    deleteComment: builder.mutation<void, number>({
+      query: (commentId) => ({
+        url: `/issues/comments/${commentId}`,
+        method: 'DELETE',
+        headers,
+      }),
+      invalidatesTags: ['Comment'],
+    }),
   }),
 });
 
@@ -133,4 +141,5 @@ export const {
   useTimelineQuery,
   useUpdateCommentMutation,
   useCreateCommentMutation,
+  useDeleteCommentMutation,
 } = labelsApi;

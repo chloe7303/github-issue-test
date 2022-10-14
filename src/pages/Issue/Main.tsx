@@ -20,8 +20,9 @@ const Main = ({
 }) => {
   const { id } = useParams() as { id: string };
   const [createComment] = useCreateCommentMutation();
-  const { data, error, isLoading, isSuccess } = useTimelineQuery(id);
-  const [createCommentBody, setCreateCommentBody] = useState();
+  const { data, error, isSuccess } = useTimelineQuery(id);
+  const [createCommentBody, setCreateCommentBody] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="grow md:mr-6">
@@ -38,12 +39,12 @@ const Main = ({
         }}
       />
       {/* other comments */}
-      {data &&
+      {isSuccess &&
         data
           .filter((timelineItem) => timelineItem.event === 'commented')
           .map((comment, index) => (
             <Comment
-              key={index}
+              key={comment.id}
               commentData={{
                 creator: comment.user.login,
                 createTime: comment.created_at,
@@ -78,13 +79,15 @@ const Main = ({
             key={1}
             text={'Comment'}
             primary={true}
-            disabled={createCommentBody === ''}
+            disabled={createCommentBody === '' || isLoading}
             onClick={async () => {
+              setIsLoading(true);
               await createComment({
                 issueNumber: id,
                 body: { body: createCommentBody },
               });
-              console.log('create comment');
+              setIsLoading(false);
+              setCreateCommentBody('');
             }}
           />,
         ]}

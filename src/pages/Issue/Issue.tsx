@@ -7,7 +7,7 @@ import { useIssueQuery } from '../../redux/labelsApi';
 const Issue = () => {
   const { id } = useParams() as { id: string };
   const { data, error, isLoading, isSuccess } = useIssueQuery(id);
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

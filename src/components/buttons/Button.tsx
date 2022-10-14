@@ -55,6 +55,8 @@ const primaryStyle = css`
   }
 `;
 
+// default disabled style: #8c95a0, #f6f8fa
+
 const disabledStyle = css`
   background-color: #94d3a2;
   :hover {
