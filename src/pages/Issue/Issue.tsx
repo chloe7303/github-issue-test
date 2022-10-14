@@ -36,7 +36,7 @@ const Issue = () => {
                 authorAssociation: data.author_association,
               }}
             />
-            <Sidebar />
+            <Sidebar assigneesData={data.assignees} labelsData={data.labels} />
           </div>
         </div>
       )}

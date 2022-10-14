@@ -129,10 +129,11 @@ const Comment = ({
                     commented {computedIssueCreatedTime(createTime)}
                   </span>
                 </div>
-                <div className="flex text-text">
+                <div className="flex text-text items-center">
                   {authorAssociation !== 'NONE' && (
-                    <span className="text-[12px] mr-3 border-border border-solid border rounded-xl px-2 py-0.5 font-semibold">
-                      {authorAssociation.toLowerCase()}
+                    <span className="text-[12px] mr-3 border-border border-solid border rounded-xl px-2 py-1 font-semibold">
+                      {authorAssociation[0] +
+                        authorAssociation.substring(1).toLowerCase()}
                     </span>
                   )}
                   <details className="mr-3 cursor-pointer">

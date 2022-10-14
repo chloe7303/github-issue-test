@@ -22,6 +22,13 @@ export type IssueType = {
     eyes: number;
   };
   id: number;
+  assignees: [{ login: string; avatar_url: string }];
+  labels: [
+    {
+      name: string;
+      color: string;
+    }
+  ];
 };
 
 export type Timeline = {
