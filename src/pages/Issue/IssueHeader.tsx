@@ -148,8 +148,8 @@ const IssueHeader = ({
                 (issue) =>
                   issue.state === state && issue.reason === state_reason
               )
-              .map((issue) => (
-                <IconBeforeButton issueState={issue} />
+              .map((issue, index) => (
+                <IconBeforeButton key={index} issueState={issue} />
               ))}
           </>
           <span className="text-muted">

@@ -4,10 +4,14 @@ export const DropDownSelectButton = ({
   action,
   actionType,
   selectedIssueAction,
+  handleSubmit,
 }) => {
   return (
     <div className="flex mr-2">
-      <button className="px-4 py-1 text-[14px] font-medium rounded-l-md border-border border-solid border h-[32px] cursor-pointer bg-default hover:bg-[#f3f4f6] flex items-center">
+      <button
+        className="px-4 py-1 text-[14px] font-medium rounded-l-md border-border border-solid border h-[32px] cursor-pointer bg-default hover:bg-[#f3f4f6] flex items-center"
+        onClick={() => handleSubmit()}
+      >
         <span className="mr-2">{action.icon}</span>
         <span className="color-[#24292f] leading-5">{action.title}</span>
       </button>

@@ -113,12 +113,6 @@ const Sidebar = ({ assigneesData, labelsData }) => {
         actionText: 'assign yourself',
         link: '',
         action: async () => {
-          await updateIssue({
-            number: id,
-            body: {
-              assignees: ['chloe7303'],
-            },
-          });
           setSelectedAssigneesComponent([
             {
               name: 'chloe7303',
@@ -133,6 +127,12 @@ const Sidebar = ({ assigneesData, labelsData }) => {
               ),
             },
           ]);
+          await updateIssue({
+            number: id,
+            body: {
+              assignees: ['chloe7303'],
+            },
+          });
         },
       },
       selectedListComponent: selectedAssigneesComponent,
@@ -143,17 +143,20 @@ const Sidebar = ({ assigneesData, labelsData }) => {
           resetHeader={{
             title: 'Clear assignees',
             action: async () => {
+              setSelectedAssigneesComponent([]);
               await updateIssue({
                 number: id,
                 body: { assignees: [] },
               });
-              setSelectedAssigneesComponent([]);
             },
           }}
           inputPlaceholder={'Type or choose a user'}
           selectedValue={selectedAssignees}
           handleSelect={async (assignee) => {
             if (selectedAssignees?.includes(assignee.title)) {
+              setSelectedAssigneesComponent((prevValue) =>
+                prevValue?.filter((item) => item.name !== assignee.title)
+              );
               const currentSelectedAssignees = selectedAssignees.filter(
                 (value) => value !== assignee.title
               );
@@ -161,21 +164,8 @@ const Sidebar = ({ assigneesData, labelsData }) => {
                 number: id,
                 body: { assignees: currentSelectedAssignees },
               });
-
-              setSelectedAssigneesComponent((prevValue) =>
-                prevValue?.filter((item) => item.name !== assignee.title)
-              );
               console.log('updated assignees', currentSelectedAssignees);
             } else {
-              const currentSelectedAssignees = [
-                ...selectedAssignees,
-                assignee.title,
-              ];
-              await updateIssue({
-                number: id,
-                body: { assignees: currentSelectedAssignees },
-              });
-
               setSelectedAssigneesComponent((prevValue) => [
                 ...prevValue,
                 {
@@ -189,6 +179,14 @@ const Sidebar = ({ assigneesData, labelsData }) => {
                   ),
                 },
               ]);
+              const currentSelectedAssignees = [
+                ...selectedAssignees,
+                assignee.title,
+              ];
+              await updateIssue({
+                number: id,
+                body: { assignees: currentSelectedAssignees },
+              });
               console.log('updated assignees', currentSelectedAssignees);
             }
           }}
@@ -217,6 +215,9 @@ const Sidebar = ({ assigneesData, labelsData }) => {
           selectedValue={selectedLabels}
           handleSelect={async (label) => {
             if (selectedLabels?.includes(label.title)) {
+              setSelectedLabelsComponent((prevValue) =>
+                prevValue?.filter((item) => item.name !== label.title)
+              );
               const currentSelectedLabels = selectedLabels.filter(
                 (value) => value !== label.title
               );
@@ -224,18 +225,8 @@ const Sidebar = ({ assigneesData, labelsData }) => {
                 number: id,
                 body: { labels: currentSelectedLabels },
               });
-
-              setSelectedLabelsComponent((prevValue) =>
-                prevValue?.filter((item) => item.name !== label.title)
-              );
               console.log('updated labels', currentSelectedLabels);
             } else {
-              const currentSelectedLabels = [...selectedLabels, label.title];
-              await updateIssue({
-                number: id,
-                body: { labels: currentSelectedLabels },
-              });
-
               setSelectedLabelsComponent((prevValue) => [
                 ...prevValue,
                 {
@@ -250,6 +241,11 @@ const Sidebar = ({ assigneesData, labelsData }) => {
                   ),
                 },
               ]);
+              const currentSelectedLabels = [...selectedLabels, label.title];
+              await updateIssue({
+                number: id,
+                body: { labels: currentSelectedLabels },
+              });
               console.log('updated labels', currentSelectedLabels);
             }
           }}

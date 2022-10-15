@@ -4,6 +4,7 @@ import Button from '../../components/buttons/Button';
 import {
   useTimelineQuery,
   useCreateCommentMutation,
+  useUpdateIssueMutation,
 } from '../../redux/labelsApi';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ const Main = ({
 }) => {
   const { id } = useParams() as { id: string };
   const [createComment] = useCreateCommentMutation();
+  const [updateIssue] = useUpdateIssueMutation();
   const { data, error, isSuccess } = useTimelineQuery(id);
   const [createCommentBody, setCreateCommentBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +31,11 @@ const Main = ({
     state: 'closed',
     state_reason: 'completed',
   });
+
+  const changeIssueState = async () => {
+    console.log('selectedIssueAction', selectedIssueAction);
+    await updateIssue({ number: id, body: selectedIssueAction });
+  };
 
   return (
     <div className="grow md:mr-6">
@@ -77,6 +84,7 @@ const Main = ({
         buttons={[
           <DropDownSelectButton
             key={0}
+            handleSubmit={changeIssueState}
             selectedIssueAction={selectedIssueAction}
             action={{
               title: 'Close issue',

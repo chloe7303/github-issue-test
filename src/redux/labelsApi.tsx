@@ -14,7 +14,7 @@ export const labelsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.github.com/repos/chloe7303/github-issues-section',
   }),
-  tagTypes: ['Label', 'Comment'],
+  tagTypes: ['Label', 'Comment', 'Issue'],
   endpoints: (builder) => ({
     labelList: builder.query<Label[], void>({
       query: () => ({
@@ -59,6 +59,7 @@ export const labelsApi = createApi({
         url: `/issues${filter}`,
         headers,
       }),
+      providesTags: ['Label'],
     }),
     assigneeList: builder.query<[], void>({
       query: () => ({
@@ -80,6 +81,7 @@ export const labelsApi = createApi({
         url: `/issues/${issueNumber}`,
         headers,
       }),
+      providesTags: ['Issue'],
     }),
     updateIssue: builder.mutation<IssueType, any>({
       query: ({ number, body }) => ({
@@ -88,6 +90,7 @@ export const labelsApi = createApi({
         body: JSON.stringify(body),
         headers,
       }),
+      invalidatesTags: ['Issue'],
     }),
     timeline: builder.query<Timeline[], string>({
       query: (issueNumber) => ({
