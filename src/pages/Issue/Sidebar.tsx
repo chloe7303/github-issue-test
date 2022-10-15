@@ -296,7 +296,7 @@ const Sidebar = ({ assigneesData, labelsData }) => {
   ];
 
   return (
-    <div className="md:w-[256px] lg:w-[296px]">
+    <div className="md:min-w-[256px] lg:min-w-[296px]">
       {sidebarList.map((item, index) => (
         <SidebarItem
           key={index}

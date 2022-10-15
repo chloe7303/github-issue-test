@@ -1,12 +1,52 @@
-import { IssueOpenedIcon } from '@primer/octicons-react';
+import {
+  IssueClosedIcon,
+  IssueOpenedIcon,
+  SkipIcon,
+} from '@primer/octicons-react';
 import Button from '../../components/buttons/Button';
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import computedIssueCreatedTime from '../../utils/computedIssueCreatedTime';
 import { useUpdateIssueMutation } from '../../redux/labelsApi';
+import IconBeforeButton from './IconBeforeButton';
+
+const isssueStateType = [
+  {
+    state: 'open',
+    reason: null,
+    icon: <IssueOpenedIcon className="!align-bottom" />,
+    bgColorCode: '#2da44e',
+  },
+  {
+    state: 'open',
+    reason: 'reopened',
+    icon: <IssueOpenedIcon className="!align-bottom" />,
+    bgColorCode: '#2da44e',
+  },
+  {
+    state: 'closed',
+    reason: 'completed',
+    icon: <IssueClosedIcon className="!align-bottom" />,
+    bgColorCode: '#8250df',
+  },
+  {
+    state: 'closed',
+    reason: 'not_planned',
+    icon: <SkipIcon className="!align-bottom" />,
+    bgColorCode: '#6e7781',
+  },
+];
 
 const IssueHeader = ({
-  headerData: { title, number, state, creator, createTime, comments },
+  headerData: {
+    title,
+    number,
+    state,
+    state_reason,
+    creator,
+    createTime,
+    comments,
+  },
 }) => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -102,10 +142,16 @@ const IssueHeader = ({
           </div>
         )}
         <div>
-          <button className="bg-primary text-light py-2 px-3 rounded-3xl mr-2">
-            <IssueOpenedIcon verticalAlign="middle" className="mr-1" />
-            <span>{state}</span>
-          </button>
+          <>
+            {isssueStateType
+              .filter(
+                (issue) =>
+                  issue.state === state && issue.reason === state_reason
+              )
+              .map((issue) => (
+                <IconBeforeButton issueState={issue} />
+              ))}
+          </>
           <span className="text-muted">
             <span className="font-semibold">{creator} </span>
             <span>

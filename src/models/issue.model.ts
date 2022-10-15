@@ -2,6 +2,7 @@ export type IssueType = {
   title: string;
   number: number;
   state: string;
+  state_reason: string;
   user: {
     login: string;
     avatar_url: string;

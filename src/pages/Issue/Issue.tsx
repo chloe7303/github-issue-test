@@ -20,6 +20,7 @@ const Issue = () => {
               title: data.title,
               number: data.number,
               state: data.state,
+              state_reason: data.state_reason,
               creator: data.user.login,
               createTime: data.created_at,
               comments: data.comments,

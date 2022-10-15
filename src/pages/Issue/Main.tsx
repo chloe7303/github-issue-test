@@ -7,6 +7,8 @@ import {
 } from '../../redux/labelsApi';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { DropDownSelectButton } from '../../components/buttons/DropDownSelectButton';
+import { IssueClosedIcon, SkipIcon } from '@primer/octicons-react';
 
 const Main = ({
   issueData: {
@@ -23,6 +25,10 @@ const Main = ({
   const { data, error, isSuccess } = useTimelineQuery(id);
   const [createCommentBody, setCreateCommentBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedIssueAction, setSelectedIssueAction] = useState({
+    state: 'closed',
+    state_reason: 'completed',
+  });
 
   return (
     <div className="grow md:mr-6">
@@ -69,11 +75,42 @@ const Main = ({
         type={'new-comment'}
         avatarUrl={creatorAvatarUrl}
         buttons={[
-          <Button
+          <DropDownSelectButton
             key={0}
-            text={'Close issue'}
-            onClick={() => {}}
-            margin={'0 5px 0 0'}
+            selectedIssueAction={selectedIssueAction}
+            action={{
+              title: 'Close issue',
+              icon:
+                selectedIssueAction.state_reason === 'completed' ? (
+                  <IssueClosedIcon fill="#8250df" />
+                ) : (
+                  <SkipIcon fill="#57606a" />
+                ),
+            }}
+            actionType={[
+              {
+                title: 'Closed as completed',
+                description: 'Done, closed, fixed, resolved',
+                icon: <IssueClosedIcon fill="#8250df" />,
+                state_reason: 'completed',
+                handleClick: () =>
+                  setSelectedIssueAction({
+                    state: 'closed',
+                    state_reason: 'completed',
+                  }),
+              },
+              {
+                title: 'Closed as not planned',
+                description: "Won't fix, can't repro, duplicate, stale",
+                icon: <SkipIcon fill="#57606a" />,
+                state_reason: 'not_planned',
+                handleClick: () =>
+                  setSelectedIssueAction({
+                    state: 'closed',
+                    state_reason: 'not_planned',
+                  }),
+              },
+            ]}
           />,
           <Button
             key={1}

@@ -103,7 +103,7 @@ const Comment = ({
         />
       ) : (
         <div className="flex">
-          <div className="mr-4 hidden md:block">
+          <div className="mr-4 hidden md:block min-w-[40px]">
             <img
               className="w-10 h-10 rounded-full inline"
               src={avatarUrl}
@@ -163,7 +163,7 @@ const Comment = ({
                 </div>
               </div>
               {/* <div className="p-4 bg-light rounded-b-md">{commentBody}</div> */}
-              <div className="p-4 bg-light rounded-b-md prose max-w-none">
+              <div className="p-4 bg-light rounded-b-md prose max-w-none text-[14px]">
                 <ReactMarkdown
                   children={commentBody || 'Nothing to preview'}
                 ></ReactMarkdown>
