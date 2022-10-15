@@ -59,7 +59,6 @@ export const labelsApi = createApi({
         url: `/issues${filter}`,
         headers,
       }),
-      providesTags: ['Label'],
     }),
     assigneeList: builder.query<[], void>({
       query: () => ({

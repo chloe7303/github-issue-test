@@ -53,6 +53,7 @@ const IssueHeader = ({
   const [titleValue, setTitleValue] = useState(title);
   const [titleInputValue, setTitleInputValue] = useState(title);
   const [updateIssue] = useUpdateIssueMutation();
+  const [showFixedIssueHeader, setShowFixedIssueHeader] = useState(false);
 
   const handleUpdateTitle = async () => {
     if (!titleInputValue) {
@@ -76,13 +77,8 @@ const IssueHeader = ({
         threshold: 0,
       };
       const callback = (entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting) {
-          // setFixedHeaderStatus(false)
-          console.log('in');
-        } else {
-          // setFixedHeaderStatus(true)
-          console.log('out');
-        }
+        if (entries[0].isIntersecting) setShowFixedIssueHeader(false);
+        else setShowFixedIssueHeader(true);
       };
       observer.current = new IntersectionObserver(callback, options);
       observer.current.observe(node);
@@ -95,8 +91,35 @@ const IssueHeader = ({
     <>
       <div
         className="pb-4 mb-8 border-b border-border border-solid"
-        // ref={fixedIssueHeader}
+        ref={fixedIssueHeader}
       >
+        <header
+          className={`fixed top-0 left-0 right-0 z-[5] border-b border-solid border-border bg-white px-2 py-3 ${
+            !showFixedIssueHeader && 'hidden'
+          }`}
+        >
+          <div className="max-w-[1216px] w-full my-0 mx-auto flex">
+            <IconBeforeButton
+              issueState={
+                isssueStateType.find(
+                  (issue) =>
+                    issue.state === state && issue.reason === state_reason
+                )!
+              }
+            />
+            <div className="text-[14px]">
+              <div className="mb-1">
+                <span className="font-semibold">{title}</span>
+                <span className="text-text"> #{number}</span>
+              </div>
+              <div className="text-text">
+                <span className="font-semibold">{creator} </span>
+                opened this issue {computedIssueCreatedTime(createTime)} ·{' '}
+                {comments} comments
+              </div>
+            </div>
+          </div>
+        </header>
         {isEditing ? (
           <div className="flex justify-between mb-3 flex-col-reverse md:flex-row">
             <input

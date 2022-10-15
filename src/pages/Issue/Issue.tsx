@@ -35,6 +35,8 @@ const Issue = () => {
                 body: data.body,
                 reactions: data.reactions,
                 authorAssociation: data.author_association,
+                state: data.state,
+                state_reason: data.state_reason,
               }}
             />
             <Sidebar assigneesData={data.assignees} labelsData={data.labels} />

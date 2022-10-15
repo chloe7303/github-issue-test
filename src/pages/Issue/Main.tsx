@@ -9,7 +9,11 @@ import {
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { DropDownSelectButton } from '../../components/buttons/DropDownSelectButton';
-import { IssueClosedIcon, SkipIcon } from '@primer/octicons-react';
+import {
+  IssueClosedIcon,
+  IssueReopenedIcon,
+  SkipIcon,
+} from '@primer/octicons-react';
 
 const Main = ({
   issueData: {
@@ -19,6 +23,8 @@ const Main = ({
     body,
     reactions,
     authorAssociation,
+    state,
+    state_reason,
   },
 }) => {
   const { id } = useParams() as { id: string };
@@ -55,7 +61,7 @@ const Main = ({
       {isSuccess &&
         data
           .filter((timelineItem) => timelineItem.event === 'commented')
-          .map((comment, index) => (
+          .map((comment) => (
             <Comment
               key={comment.id}
               commentData={{
