@@ -27,21 +27,178 @@ const Main = ({
     state_reason,
   },
 }) => {
+  // console.log('stete', state);
   const { id } = useParams() as { id: string };
   const [createComment] = useCreateCommentMutation();
   const [updateIssue] = useUpdateIssueMutation();
   const { data, error, isSuccess } = useTimelineQuery(id);
   const [createCommentBody, setCreateCommentBody] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedIssueAction, setSelectedIssueAction] = useState({
-    state: 'closed',
-    state_reason: 'completed',
-  });
 
   const changeIssueState = async () => {
-    console.log('selectedIssueAction', selectedIssueAction);
-    await updateIssue({ number: id, body: selectedIssueAction });
+    await updateIssue({ number: id, body: selectedIssueAction.body });
+    console.log(state, state_reason);
+    setSelectedIssueAction(
+      initialSelectedIssueAction(
+        selectedIssueAction.body.state,
+        selectedIssueAction.body.state_reason
+      )
+    );
   };
+
+  const issueActionStateType = {
+    open: {
+      defaultAction: {
+        title: 'Close issue',
+        icon: <IssueClosedIcon fill="#8250df" />,
+        body: {
+          state: 'closed',
+          state_reason: 'completed',
+        },
+      },
+      actionType: [
+        {
+          title: 'Closed as completed',
+          description: 'Done, closed, fixed, resolved',
+          icon: <IssueClosedIcon fill="#8250df" />,
+          state_reason: 'completed',
+          handleClick: () =>
+            setSelectedIssueAction({
+              title: 'Close issue',
+              icon: <IssueClosedIcon fill="#8250df" />,
+              body: {
+                state: 'closed',
+                state_reason: 'completed',
+              },
+            }),
+        },
+        {
+          title: 'Closed as not planned',
+          description: "Won't fix, can't repro, duplicate, stale",
+          icon: <SkipIcon fill="#57606a" />,
+          state_reason: 'not_planned',
+          handleClick: () =>
+            setSelectedIssueAction({
+              title: 'Close issue',
+              icon: <SkipIcon fill="#57606a" />,
+              body: {
+                state: 'closed',
+                state_reason: 'not_planned',
+              },
+            }),
+        },
+      ],
+    },
+    closed: {
+      completed: {
+        defaultAction: {
+          title: 'Reopen',
+          icon: <IssueReopenedIcon fill="#1a7f37" />,
+          body: {
+            state: 'open',
+            state_reason: 'reopened',
+          },
+        },
+        actionType: [
+          {
+            title: 'Reopen',
+            description: '',
+            icon: <IssueReopenedIcon fill="#1a7f37" />,
+            state_reason: 'reopened',
+            handleClick: () =>
+              setSelectedIssueAction({
+                title: 'Reopen',
+                icon: <IssueReopenedIcon fill="#1a7f37" />,
+                body: {
+                  state: 'open',
+                  state_reason: 'reopened',
+                },
+              }),
+          },
+          {
+            title: 'Closed as not planned',
+            description: '',
+            icon: <SkipIcon fill="#57606a" />,
+            state_reason: 'not_planned',
+            handleClick: () =>
+              setSelectedIssueAction({
+                title: 'Close as not planned',
+                icon: <SkipIcon fill="#57606a" />,
+                body: {
+                  state: 'closed',
+                  state_reason: 'not_planned',
+                },
+              }),
+          },
+        ],
+      },
+      not_planned: {
+        defaultAction: {
+          title: 'Reopen',
+          icon: <IssueReopenedIcon fill="#1a7f37" />,
+          body: {
+            state: 'open',
+            state_reason: 'reopened',
+          },
+        },
+        actionType: [
+          {
+            title: 'Reopen',
+            description: '',
+            icon: <IssueReopenedIcon fill="#1a7f37" />,
+            state_reason: 'reopened',
+            handleClick: () =>
+              setSelectedIssueAction({
+                title: 'Reopen',
+                icon: <IssueReopenedIcon fill="#1a7f37" />,
+                body: {
+                  state: 'open',
+                  state_reason: 'reopened',
+                },
+              }),
+          },
+          {
+            title: 'Closed as completed',
+            description: '',
+            icon: <IssueClosedIcon fill="#8250df" />,
+            state_reason: 'completed',
+            handleClick: () =>
+              setSelectedIssueAction({
+                title: 'Close as completed',
+                icon: <IssueClosedIcon fill="#8250df" />,
+                body: {
+                  state: 'closed',
+                  state_reason: 'completed',
+                },
+              }),
+          },
+        ],
+      },
+    },
+  };
+
+  const initialSelectedIssueAction = (state, state_reason) => {
+    if (state === 'open') {
+      const { title, icon, body } = issueActionStateType[state].defaultAction;
+      return {
+        title,
+        icon,
+        body,
+      };
+    } else if (state === 'closed') {
+      const { title, icon, body } =
+        issueActionStateType[state][state_reason].defaultAction;
+      return {
+        title,
+        icon,
+        body,
+      };
+    }
+  };
+
+  const [selectedIssueAction, setSelectedIssueAction] = useState(() =>
+    initialSelectedIssueAction(state, state_reason)
+  );
 
   return (
     <div className="grow md:mr-6">
@@ -92,39 +249,11 @@ const Main = ({
             key={0}
             handleSubmit={changeIssueState}
             selectedIssueAction={selectedIssueAction}
-            action={{
-              title: 'Close issue',
-              icon:
-                selectedIssueAction.state_reason === 'completed' ? (
-                  <IssueClosedIcon fill="#8250df" />
-                ) : (
-                  <SkipIcon fill="#57606a" />
-                ),
-            }}
-            actionType={[
-              {
-                title: 'Closed as completed',
-                description: 'Done, closed, fixed, resolved',
-                icon: <IssueClosedIcon fill="#8250df" />,
-                state_reason: 'completed',
-                handleClick: () =>
-                  setSelectedIssueAction({
-                    state: 'closed',
-                    state_reason: 'completed',
-                  }),
-              },
-              {
-                title: 'Closed as not planned',
-                description: "Won't fix, can't repro, duplicate, stale",
-                icon: <SkipIcon fill="#57606a" />,
-                state_reason: 'not_planned',
-                handleClick: () =>
-                  setSelectedIssueAction({
-                    state: 'closed',
-                    state_reason: 'not_planned',
-                  }),
-              },
-            ]}
+            actionType={
+              state === 'open'
+                ? issueActionStateType.open.actionType
+                : issueActionStateType[state][state_reason].actionType
+            }
           />,
           <Button
             key={1}

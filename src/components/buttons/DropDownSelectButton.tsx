@@ -1,7 +1,6 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
 
 export const DropDownSelectButton = ({
-  action,
   actionType,
   selectedIssueAction,
   handleSubmit,
@@ -12,8 +11,10 @@ export const DropDownSelectButton = ({
         className="px-4 py-1 text-[14px] font-medium rounded-l-md border-border border-solid border h-[32px] cursor-pointer bg-default hover:bg-[#f3f4f6] flex items-center"
         onClick={() => handleSubmit()}
       >
-        <span className="mr-2">{action.icon}</span>
-        <span className="color-[#24292f] leading-5">{action.title}</span>
+        <span className="mr-2">{selectedIssueAction.icon}</span>
+        <span className="color-[#24292f] leading-5">
+          {selectedIssueAction.title}
+        </span>
       </button>
       <details className="relative bg-default hover:bg-[#f3f4f6] border-border border-solid border rounded-r-md border-l-0">
         <summary className="flex px-2.5 py-1.5">
@@ -28,8 +29,8 @@ export const DropDownSelectButton = ({
             >
               <CheckIcon
                 className={`!align-bottom mr-2 ${
-                  selectedIssueAction.state_reason !== action.state_reason &&
-                  '!invisible'
+                  selectedIssueAction.body.state_reason !==
+                    action.state_reason && '!invisible'
                 }`}
               />
               <div>
