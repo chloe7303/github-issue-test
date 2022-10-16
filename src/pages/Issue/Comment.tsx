@@ -52,7 +52,11 @@ const Comment = ({
     <>
       {isEditing ? (
         <IssueCommentForm
-          type={'update-comment-owner'}
+          type={
+            authorAssociation === 'OWNER'
+              ? 'update-comment-owner'
+              : 'update-comment'
+          }
           formContent={{
             title: null,
             setTitle: null,

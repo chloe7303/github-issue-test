@@ -1,6 +1,6 @@
 import { CheckIcon, TriangleDownIcon } from '@primer/octicons-react';
 
-export const DropDownSelectButton = ({
+const DropDownSelectButton = ({
   actionType,
   selectedIssueAction,
   handleSubmit,
@@ -49,3 +49,5 @@ export const DropDownSelectButton = ({
     </div>
   );
 };
+
+export default DropDownSelectButton;

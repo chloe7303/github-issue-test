@@ -8,7 +8,7 @@ import {
 } from '../../redux/labelsApi';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { DropDownSelectButton } from '../../components/buttons/DropDownSelectButton';
+import DropDownSelectButton from './DropDownSelectButton';
 import {
   IssueClosedIcon,
   IssueReopenedIcon,
