@@ -93,7 +93,7 @@ export const labelsApi = createApi({
     }),
     timeline: builder.query<Timeline[], string>({
       query: (issueNumber) => ({
-        url: `/issues/${issueNumber}/timeline`,
+        url: `/issues/${issueNumber}/timeline?per_page=100`,
         headers,
       }),
       providesTags: ['Comment'],
