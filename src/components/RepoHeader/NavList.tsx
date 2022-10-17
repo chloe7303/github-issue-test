@@ -72,7 +72,7 @@ const NavList = () => {
             key={index}
             active={list.active}
             index={index}
-            onClick={() => list.active && navigate('/')}
+            onClick={() => list.active && navigate('/issues')}
           >
             {list.icon}
             <Text>{list.text}</Text>

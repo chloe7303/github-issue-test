@@ -231,7 +231,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="md:w-[240px] lg:w-[256px]">
+    <div className="md:w-[256px] lg:w-[296px]">
       {sidebarList.map((item, index) => (
         <SidebarItem
           key={index}

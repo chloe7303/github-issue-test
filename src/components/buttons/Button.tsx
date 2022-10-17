@@ -6,6 +6,7 @@ declare module 'react' {
     primary?: boolean;
     index?: number;
     stretching?: boolean;
+    danger?: boolean;
   }
 }
 
@@ -15,6 +16,7 @@ type ButtonProps = {
   onClick?: () => void;
   primary?: boolean;
   disabled?: boolean;
+  danger?: boolean;
   stretching?: boolean;
 };
 
@@ -41,6 +43,7 @@ const Wrapper = styled.button`
   ${({ primary }) => primary && primaryStyle};
   ${({ disabled }) => disabled && disabledStyle};
   ${({ stretching }) => stretching && 'width: 100%'};
+  ${({ danger }) => danger && dangerStyle};
 `;
 
 const primaryStyle = css`
@@ -52,6 +55,8 @@ const primaryStyle = css`
   }
 `;
 
+// default disabled style: #8c95a0, #f6f8fa
+
 const disabledStyle = css`
   background-color: #94d3a2;
   :hover {
@@ -60,12 +65,21 @@ const disabledStyle = css`
   cursor: not-allowed;
 `;
 
+const dangerStyle = css`
+  color: #cf222e;
+  :hover {
+    color: #fff;
+    background-color: #a40e26;
+  }
+`;
+
 const Button = ({
   text,
   margin,
   primary,
   disabled,
   stretching,
+  danger,
   onClick,
 }: ButtonProps) => {
   return (
@@ -74,6 +88,7 @@ const Button = ({
       primary={primary}
       disabled={disabled}
       stretching={stretching}
+      danger={danger}
       onClick={onClick ? () => onClick() : () => {}}
     >
       {text}

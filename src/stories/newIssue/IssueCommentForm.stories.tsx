@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import IssueCommentForm from '../../pages/NewIssue/IssueCommentForm';
+import Button from '../../components/buttons/Button';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -21,9 +22,15 @@ const Template: ComponentStory<typeof IssueCommentForm> = (args) => (
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 Default.args = {
-  handleSubmit: () => {},
-  title: '',
-  body: '',
-  setTitle: () => {},
-  setBody: () => {},
+  type: 'new-issue',
+  formContent: { title: '', setTitle: () => {}, body: '', setBody: () => {} },
+  avatarUrl: 'https://avatars.githubusercontent.com/u/57607232?s=80&v=4',
+  buttons: [
+    <Button
+      text={'Submit new issue'}
+      primary={true}
+      disabled={false}
+      onClick={() => {}}
+    />,
+  ],
 };

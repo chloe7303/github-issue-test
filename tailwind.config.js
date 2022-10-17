@@ -43,7 +43,7 @@ module.exports = {
               fontStyle: 'italic',
             },
             blockquote: {
-              margin: 0,
+              margin: '0 0 16px 0',
               fontSize: '14px',
               fontStyle: 'normal',
               fontWeight: 'normal',

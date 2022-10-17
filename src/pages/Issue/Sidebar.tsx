@@ -1,11 +1,20 @@
-import Button from '../../components/buttons/Button';
 import FilterDropdown from '../IssueList/FilterDropdown';
-import { useState, useContext } from 'react';
-import { useLabelListQuery, useAssigneeListQuery } from '../../redux/labelsApi';
-import SidebarItem from './SidebarItem';
-import Assignee from './Assignee';
+import { useState } from 'react';
+import {
+  useLabelListQuery,
+  useAssigneeListQuery,
+  useUpdateIssueMutation,
+} from '../../redux/labelsApi';
+import SidebarItem from '../NewIssue/SidebarItem';
+import Assignee from '../NewIssue/Assignee';
 import Label from '../LabelList/Label';
-import { NewIssueContext, NewIssueContextType } from './Issue';
+import {
+  ArrowRightIcon,
+  LockIcon,
+  TrashIcon,
+  PinIcon,
+} from '@primer/octicons-react';
+import { useParams } from 'react-router-dom';
 
 type AssigneeType = {
   login: string;
@@ -20,22 +29,67 @@ type SelectedLabelsComponent = {
   name: string;
   component: JSX.Element;
 };
-const Sidebar = () => {
-  const { issueForm, setIssueForm } = useContext(
-    NewIssueContext
-  ) as NewIssueContextType;
 
+const sidebarToolList = [
+  {
+    title: 'Lock conversation',
+    icon: <LockIcon className="mr-1" />,
+  },
+  {
+    title: 'Pin issue',
+    icon: <PinIcon className="mr-1" />,
+  },
+  {
+    title: 'Transfer issue',
+    icon: <ArrowRightIcon className="mr-1" />,
+  },
+  {
+    title: 'Delete isuse',
+    icon: <TrashIcon className="mr-1" />,
+  },
+];
+const Sidebar = ({ assigneesData, labelsData }) => {
+  const { id } = useParams() as { id: string };
+  const [updateIssue] = useUpdateIssueMutation();
   const { data: labelListData, isSuccess: getLabelListSuccess } =
     useLabelListQuery();
   const { data: assigneeListData, isSuccess: getAssigneeListSuccess } =
     useAssigneeListQuery();
 
+  // assignees
+  const inititalSelectedAssigneesComponent = assigneesData.map((assignee) => ({
+    name: assignee.login,
+    component: (
+      <Assignee
+        key={assignee.login}
+        name={assignee.login}
+        imgUrl={assignee.avatar_url}
+      />
+    ),
+  }));
   const [selectedAssigneesComponent, setSelectedAssigneesComponent] = useState<
     SelectedAssigneesComponent[]
-  >([]);
+  >(inititalSelectedAssigneesComponent);
+  const selectedAssignees = selectedAssigneesComponent?.map(
+    (assignee) => assignee.name
+  );
+
+  // labels
+  const inititalSelectedLabelsComponent = labelsData.map((label) => ({
+    name: label.name,
+    component: (
+      <Label
+        key={label.color}
+        bgColorCode={label.color}
+        name={label.name}
+        thin={true}
+      />
+    ),
+  }));
   const [selectedLabelsComponent, setSelectedLabelsComponent] = useState<
     SelectedLabelsComponent[]
-  >([]);
+  >(inititalSelectedLabelsComponent);
+  const selectedLabels = selectedLabelsComponent?.map((label) => label.name);
 
   const labelList = labelListData?.map((label) => ({
     title: label.name,
@@ -58,11 +112,7 @@ const Sidebar = () => {
         text: 'No one-',
         actionText: 'assign yourself',
         link: '',
-        action: () => {
-          setIssueForm((prevValue) => ({
-            ...prevValue,
-            assignees: ['chloe7303'],
-          }));
+        action: async () => {
           setSelectedAssigneesComponent([
             {
               name: 'chloe7303',
@@ -77,6 +127,12 @@ const Sidebar = () => {
               ),
             },
           ]);
+          await updateIssue({
+            number: id,
+            body: {
+              assignees: ['chloe7303'],
+            },
+          });
         },
       },
       selectedListComponent: selectedAssigneesComponent,
@@ -86,31 +142,30 @@ const Sidebar = () => {
           subHeader={'Suggestions'}
           resetHeader={{
             title: 'Clear assignees',
-            action: () => {
+            action: async () => {
               setSelectedAssigneesComponent([]);
-              setIssueForm((prevValue) => ({ ...prevValue, assignees: [] }));
+              await updateIssue({
+                number: id,
+                body: { assignees: [] },
+              });
             },
           }}
           inputPlaceholder={'Type or choose a user'}
-          selectedValue={selectedAssigneesComponent.map(
-            (assignee) => assignee.name
-          )}
-          handleSelect={(assignee) => {
-            if (issueForm.assignees.includes(assignee.title)) {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                assignees: prevValue.assignees.filter(
-                  (item) => item !== assignee.title
-                ),
-              }));
+          selectedValue={selectedAssignees}
+          handleSelect={async (assignee) => {
+            if (selectedAssignees?.includes(assignee.title)) {
               setSelectedAssigneesComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== assignee.title)
+                prevValue?.filter((item) => item.name !== assignee.title)
               );
+              const currentSelectedAssignees = selectedAssignees.filter(
+                (value) => value !== assignee.title
+              );
+              await updateIssue({
+                number: id,
+                body: { assignees: currentSelectedAssignees },
+              });
+              console.log('updated assignees', currentSelectedAssignees);
             } else {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                assignees: [...prevValue.assignees, assignee.title],
-              }));
               setSelectedAssigneesComponent((prevValue) => [
                 ...prevValue,
                 {
@@ -124,6 +179,15 @@ const Sidebar = () => {
                   ),
                 },
               ]);
+              const currentSelectedAssignees = [
+                ...selectedAssignees,
+                assignee.title,
+              ];
+              await updateIssue({
+                number: id,
+                body: { assignees: currentSelectedAssignees },
+              });
+              console.log('updated assignees', currentSelectedAssignees);
             }
           }}
           sortList={assigneeList}
@@ -148,28 +212,28 @@ const Sidebar = () => {
           subHeader={''}
           resetHeader={''}
           inputPlaceholder={'Filter labels'}
-          selectedValue={selectedLabelsComponent.map((label) => label.name)}
-          handleSelect={(label) => {
-            if (issueForm.labels.includes(label.title)) {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                labels: prevValue.labels.filter((item) => item !== label.title),
-              }));
+          selectedValue={selectedLabels}
+          handleSelect={async (label) => {
+            if (selectedLabels?.includes(label.title)) {
               setSelectedLabelsComponent((prevValue) =>
-                prevValue.filter((item) => item.name !== label.title)
+                prevValue?.filter((item) => item.name !== label.title)
               );
+              const currentSelectedLabels = selectedLabels.filter(
+                (value) => value !== label.title
+              );
+              await updateIssue({
+                number: id,
+                body: { labels: currentSelectedLabels },
+              });
+              console.log('updated labels', currentSelectedLabels);
             } else {
-              setIssueForm((prevValue) => ({
-                ...prevValue,
-                labels: [...prevValue.labels, label.title],
-              }));
               setSelectedLabelsComponent((prevValue) => [
                 ...prevValue,
                 {
                   name: label.title,
                   component: (
                     <Label
-                      key={label.title}
+                      key={label.color}
                       bgColorCode={label.color}
                       name={label.title}
                       thin={true}
@@ -177,6 +241,12 @@ const Sidebar = () => {
                   ),
                 },
               ]);
+              const currentSelectedLabels = [...selectedLabels, label.title];
+              await updateIssue({
+                number: id,
+                body: { labels: currentSelectedLabels },
+              });
+              console.log('updated labels', currentSelectedLabels);
             }
           }}
           sortList={labelList}
@@ -216,12 +286,13 @@ const Sidebar = () => {
         link: '',
         action: null,
       },
-      dropdownComponent: false,
+      selectedListComponent: [],
+      dropdownComponent: true,
     },
   ];
 
   return (
-    <div className="md:w-[240px] lg:w-[256px]">
+    <div className="md:min-w-[256px] lg:min-w-[296px]">
       {sidebarList.map((item, index) => (
         <SidebarItem
           key={index}
@@ -232,13 +303,13 @@ const Sidebar = () => {
         />
       ))}
 
-      <div className="md:hidden">
-        <Button
-          text={'Submit new issue'}
-          primary={true}
-          disabled={true}
-          stretching={true}
-        />
+      <div className="py-4 text-[12px] font-semibold">
+        {sidebarToolList.map((item, index) => (
+          <div key={index} className="mb-4">
+            {item.icon}
+            {item.title}
+          </div>
+        ))}
       </div>
     </div>
   );
