@@ -7,3 +7,10 @@ export interface Label {
   default?: boolean;
   description: string;
 }
+
+export interface Issue {
+  title: string;
+  body: string;
+  assignees: string[];
+  labels: string[];
+}

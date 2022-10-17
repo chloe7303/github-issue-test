@@ -111,9 +111,13 @@ const Avatar = styled.img`
 const navlist = ['Pull requests', 'Issues', 'Marketplace', 'Explore'];
 
 function Header() {
-  const [user, setUser] = useState<{} | null>(null);
+  type User = {
+    user_metadata: {
+      avatar_url?: string;
+    };
+  };
+  const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
 
   useEffect(() => {
     checkUser();
@@ -123,8 +127,7 @@ function Header() {
   function checkUser() {
     const user = supabase.auth.user();
     console.log(user);
-    setUser(user!);
-    setAvatarUrl(user?.user_metadata.avatar_url);
+    setUser(user);
     window.addEventListener('hashchange', () => {
       checkUser();
     });
@@ -141,8 +144,7 @@ function Header() {
       }
     );
 
-    setUser(user!);
-    setAvatarUrl(user?.user_metadata.avatar_url);
+    setUser(user);
     setToken(session?.provider_token!);
   }
 
@@ -150,7 +152,6 @@ function Header() {
     console.log('sign out');
     await supabase.auth.signOut();
     setUser(null);
-    setAvatarUrl('');
     setToken('');
   }
 
@@ -172,7 +173,9 @@ function Header() {
           <BellIcon fill="#fff" />
           <PlusIcon fill="#fff" />
           <DropdownCaret />
-          {avatarUrl && <Avatar src={avatarUrl} />}
+          {user?.user_metadata.avatar_url && (
+            <Avatar src={user.user_metadata.avatar_url} />
+          )}
           <DropdownCaret />
           <Button onClick={signOut}>Sign out</Button>
         </Info>

@@ -1,17 +1,13 @@
 import { CheckIcon, XIcon } from '@primer/octicons-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-const Dropdown = ({ header, sortList }) => {
-  const [currentFilter, setCurrentFilter] = useState('');
+const Dropdown = ({ header, sortList, defaultCurrentFilter }) => {
+  const [currentFilter, setCurrentFilter] = useState(defaultCurrentFilter);
 
   const handleFilter = (item) => {
     setCurrentFilter(item.title);
     item.action();
   };
-
-  useEffect(() => {
-    if (header === 'Sort by') setCurrentFilter('Newest');
-  }, [header]);
 
   return (
     <div className="absolute left-0 w-[300px] rounded-md bg-light border border-solid border-border mt-2 shadow-md shadow-shadow">

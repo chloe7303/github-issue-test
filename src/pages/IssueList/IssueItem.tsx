@@ -4,6 +4,7 @@ import {
   IssueClosedIcon,
   SkipIcon,
 } from '@primer/octicons-react';
+import Label from '../LabelList/Label';
 
 const IssueItem = ({ issue }) => {
   const computedIssueCreatedTime = (createdTime) => {
@@ -35,30 +36,15 @@ const IssueItem = ({ issue }) => {
       <div className="px-2 grow">
         <span className="font-semibold mr-1">{issue.title}</span>
 
-        <span className="block lg:inline">
+        <span className="block lg:inline my-1">
           {issue.labels?.map((label, index) => {
-            const lightOrDark = (bgColor = '000080') => {
-              const r = parseInt(bgColor.slice(0, 2), 16);
-              const g = parseInt(bgColor.slice(2, 4), 16);
-              const b = parseInt(bgColor.slice(4, 6), 16);
-              const hsp = r * 0.3 + g * 0.6 + b * 0.1;
-              if (hsp > 127.5) {
-                return 'black';
-              } else {
-                return 'white';
-              }
-            };
             return (
-              <span
+              <Label
                 key={index}
-                className="font-semibold py-[1px] px-[7px] rounded-[10px] mr-1 text-xs"
-                style={{
-                  backgroundColor: `#${label.color}`,
-                  color: `${lightOrDark(label.color)}`,
-                }}
-              >
-                {label.name}
-              </span>
+                bgColorCode={label.color}
+                name={label.name}
+                thin={true}
+              />
             );
           })}
         </span>

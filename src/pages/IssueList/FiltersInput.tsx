@@ -61,7 +61,11 @@ const FiltersInput = () => {
           Filters
           <span className="inline-block align-middle border-solid border-x-4 border-t-4 border-x-transparent border-b-transparent ml-2"></span>
         </summary>
-        <Dropdown header={'Filter Issues'} sortList={sortList} />
+        <Dropdown
+          header={'Filter Issues'}
+          sortList={sortList}
+          defaultCurrentFilter={''}
+        />
       </details>
       <div className="relative w-full">
         <SearchIcon size={16} className="absolute left-2 top-[8px] fill-text" />
